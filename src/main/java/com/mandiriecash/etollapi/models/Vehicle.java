@@ -1,10 +1,20 @@
 package com.mandiriecash.etollapi.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="vehicles")
 public class Vehicle
 {
+    @Id
+    @GeneratedValue
+    @Column(name="id")
     private int id;
+    @Column(name="name")
     private String name;
+    @Column(name = "plate_no")
     private String plateNo;
+    @Column(name = "photo_url")
     private String photoUrl;
 
     public int getId() {

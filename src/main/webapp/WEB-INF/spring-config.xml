@@ -27,6 +27,11 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.mandiriecash.etollapi.models.User</value>
+                <value>com.mandiriecash.etollapi.models.Toll</value>
+                <value>com.mandiriecash.etollapi.models.Vehicle</value>
+                <value>com.mandiriecash.etollapi.models.Staff</value>
+                <value>com.mandiriecash.etollapi.models.Activity</value>
+                <value>com.mandiriecash.etollapi.models.Price</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -41,6 +46,16 @@
     <context:component-scan base-package="com.mandiriecash.etollapi" />
     <bean id="userDAO" class="com.mandiriecash.etollapi.dao.UserDAOImpl"> </bean>
     <bean id="userService" class="com.mandiriecash.etollapi.services.UserServiceImpl"></bean>
+    <bean id="tollDAO" class="com.mandiriecash.etollapi.dao.TollDAOImpl"> </bean>
+    <bean id="tollService" class="com.mandiriecash.etollapi.services.TollServiceImpl"></bean>
+    <bean id="staffDAO" class="com.mandiriecash.etollapi.dao.StaffDAOImpl"> </bean>
+    <bean id="staffService" class="com.mandiriecash.etollapi.services.StaffServiceImpl"></bean>
+    <bean id="vehicleDAO" class="com.mandiriecash.etollapi.dao.VehicleDAOImpl"> </bean>
+    <bean id="vehicleService" class="com.mandiriecash.etollapi.services.VehicleServiceImpl"></bean>
+    <bean id="activityDAO" class="com.mandiriecash.etollapi.dao.ActivityDAOImpl"> </bean>
+    <bean id="activityService" class="com.mandiriecash.etollapi.services.ActivityServiceImpl"></bean>
+    <bean id="priceDAO" class="com.mandiriecash.etollapi.dao.PriceDAOImpl"> </bean>
+    <bean id="priceService" class="com.mandiriecash.etollapi.services.PriceServiceImpl"></bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

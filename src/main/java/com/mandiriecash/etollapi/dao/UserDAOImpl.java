@@ -10,7 +10,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class UserDAOImpl implements UserDAO {
     @Autowired
     private SessionFactory sessionFactory;
@@ -23,6 +22,14 @@ public class UserDAOImpl implements UserDAO {
         session.beginTransaction();
         transaction.commit();
         return user;
+    }
+
+    public void createUser(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(user);
+        transaction.commit();
+        session.close();
     }
 
 }
