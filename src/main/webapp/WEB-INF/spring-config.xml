@@ -57,6 +57,10 @@
     <bean id="priceDAO" class="com.mandiriecash.etollapi.dao.PriceDAOImpl"> </bean>
     <bean id="priceService" class="com.mandiriecash.etollapi.services.PriceServiceImpl"></bean>
 
+    <bean id="mEAURLFactory" class="com.mandiriecash.etollapi.services.MEAURLFactory"/>
+
+    <bean id="gson" class="com.google.gson.Gson"/>
+
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
