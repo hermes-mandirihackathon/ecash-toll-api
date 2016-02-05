@@ -5,9 +5,12 @@ package com.mandiriecash.etollapi.services;
  */
 import com.google.gson.Gson;
 import com.mandiriecash.etollapi.dao.UserDAO;
-import com.mandiriecash.etollapi.mea.MEAIOException;
-import com.mandiriecash.etollapi.mea.MEALoginFailedException;
+import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
+import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.mea.MEALoginResponse;
+import com.mandiriecash.etollapi.mea.exceptions.MEASyncRESTClient;
+import com.mandiriecash.etollapi.mea.exceptions.MEASyncRESTClientImpl;
+import com.mandiriecash.etollapi.mea.requests.MEALoginRequest;
 import com.mandiriecash.etollapi.models.User;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private Gson gson;
 
+    MEASyncRESTClient meaSyncRESTClient = new MEASyncRESTClientImpl();
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     @Autowired
@@ -56,23 +60,12 @@ public class UserServiceImpl implements UserService{
      */
     public String loginUser(String uid,String msisdn,String credentials)
             throws MEAIOException, MEALoginFailedException {
-        try {
-            Response response = okHttpClient.newCall(
-                    new Request.Builder()
-                            .url(mandiriECashAPIURLFactory.login(uid,msisdn,credentials))
-                            .build()).
-                    execute();
-            MEALoginResponse loginResponse = gson.fromJson(response.body().charStream(),MEALoginResponse.class);
-            if (loginResponse.getStatus().equals(MEALoginResponse.LOGIN_FAILED)){
-                //TODO error yang dikasih si mandiri ecash API ini gak jelas.
-                throw new MEALoginFailedException("Maybe invalid username/password?");
-            } else {
-                //TODO call database and return token
-                return loginResponse.getToken();
-            }
-        } catch (IOException e) {
-            throw new MEAIOException(e);
-        }
+        MEALoginResponse meaLoginResponse = meaSyncRESTClient.loginMember((new MEALoginRequest.Builder())
+                .uid(uid)
+                .msisdn(msisdn)
+                .credentials(credentials)
+                .build());
+        return meaLoginResponse.getToken();
     }
 
     public long balanceInquiry(User user, String token) {
