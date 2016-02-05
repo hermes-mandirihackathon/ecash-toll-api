@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mandiriecash.etollapi.models.User;
-import com.mandiriecash.etollapi.mea.MEALoginFailedException;
+import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.services.UserService;
-import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.mandiriecash.etollapi.mea;
+package com.mandiriecash.etollapi.mea.exceptions;
 
 import java.io.IOException;
 
