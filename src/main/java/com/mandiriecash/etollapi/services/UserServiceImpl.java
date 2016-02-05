@@ -5,21 +5,19 @@ package com.mandiriecash.etollapi.services;
  */
 import com.google.gson.Gson;
 import com.mandiriecash.etollapi.dao.UserDAO;
+import com.mandiriecash.etollapi.mea.MEAURLFactory;
 import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
-import com.mandiriecash.etollapi.mea.MEALoginResponse;
-import com.mandiriecash.etollapi.mea.exceptions.MEASyncRESTClient;
-import com.mandiriecash.etollapi.mea.exceptions.MEASyncRESTClientImpl;
+import com.mandiriecash.etollapi.mea.responses.MEALoginResponse;
+import com.mandiriecash.etollapi.mea.client.MEASyncRESTClient;
+import com.mandiriecash.etollapi.mea.client.MEASyncRESTClientImpl;
 import com.mandiriecash.etollapi.mea.requests.MEALoginRequest;
 import com.mandiriecash.etollapi.models.User;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,7 @@ public class UserServiceImpl implements UserService{
      */
     public String loginUser(String uid,String msisdn,String credentials)
             throws MEAIOException, MEALoginFailedException {
-        MEALoginResponse meaLoginResponse = meaSyncRESTClient.loginMember((new MEALoginRequest.Builder())
+        MEALoginResponse meaLoginResponse = meaSyncRESTClient.login((new MEALoginRequest.Builder())
                 .uid(uid)
                 .msisdn(msisdn)
                 .credentials(credentials)

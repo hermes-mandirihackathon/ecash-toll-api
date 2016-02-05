@@ -1,4 +1,4 @@
-package com.mandiriecash.etollapi.mea;
+package com.mandiriecash.etollapi.mea.responses;
 
 public class MEALoginResponse {
     public static final String LOGIN_FAILED = "LOGIN_FAILED";
@@ -16,5 +16,17 @@ public class MEALoginResponse {
 
     public String getMsisdn() {
         return msisdn;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setMsisdn(String msisdn) {
+        this.msisdn = msisdn;
     }
 }
