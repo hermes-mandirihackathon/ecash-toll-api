@@ -24,15 +24,7 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                             .url(meaurlFactory.login(meaLoginRequest.getUid(),meaLoginRequest.getMsisdn(),meaLoginRequest.getCredentials()))
                             .build()).
                     execute();
-            MEALoginResponse loginResponse = gson.fromJson(response.body().charStream(), MEALoginResponse.class);
-            if (loginResponse.getStatus().equals(MEALoginResponse.LOGIN_FAILED)){
-                //TODO error yang dikasih si mandiri ecash API ini gak jelas.
-                throw new MEALoginFailedException("Invalid username");
-            } else if (loginResponse.getToken().isEmpty()) {
-                throw new MEALoginFailedException("Invalid password");
-            } else {
-                return loginResponse;
-            }
+            return gson.fromJson(response.body().charStream(), MEALoginResponse.class);
         } catch (IOException e) {
             throw new MEAIOException(e);
         }

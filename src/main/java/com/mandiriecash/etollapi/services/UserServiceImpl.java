@@ -63,6 +63,13 @@ public class UserServiceImpl implements UserService{
                 .msisdn(msisdn)
                 .credentials(credentials)
                 .build());
+        if (meaLoginResponse.getStatus().equals(MEALoginResponse.LOGIN_FAILED)){
+            throw new MEALoginFailedException("Invalid username");
+        } else if (meaLoginResponse.getStatus().equals(MEALoginResponse.BLOCKED)){
+            throw new MEALoginFailedException(msisdn + " blocked");
+        } else if (meaLoginResponse.getToken() == null || meaLoginResponse.getToken().isEmpty()){
+            throw new MEALoginFailedException("Invalid password");
+        }
         return meaLoginResponse.getToken();
     }
 

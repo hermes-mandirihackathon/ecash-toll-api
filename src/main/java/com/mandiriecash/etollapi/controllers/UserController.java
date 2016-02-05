@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
+import com.mandiriecash.etollapi.mea.responses.MEALoginResponse;
 import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.services.UserService;
@@ -49,7 +51,11 @@ public class UserController {
             String token = userService.loginUser(uid,msisdn,credentials);
             userResponse = new UserResponse(OK,"",null,token,0);
         } catch (IOException e) {
-            userResponse = new UserResponse(ERROR,"Error while contacting Mandiri API");
+            if (e instanceof MEAIOException){
+                userResponse = new UserResponse(ERROR,"Error while contacting Mandiri ECash API");
+            } else {
+                userResponse = new UserResponse(ERROR,"Error while contacting Etoll API");
+            }
             e.printStackTrace();
         } catch (MEALoginFailedException e) {
             userResponse = new UserResponse(ERROR,e.getMessage());

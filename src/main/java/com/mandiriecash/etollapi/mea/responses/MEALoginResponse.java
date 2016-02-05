@@ -2,6 +2,7 @@ package com.mandiriecash.etollapi.mea.responses;
 
 public class MEALoginResponse {
     public static final String LOGIN_FAILED = "LOGIN_FAILED";
+    public static final String BLOCKED = "BLOCKED";
     private String status;
     private String token;
     private String msisdn;
