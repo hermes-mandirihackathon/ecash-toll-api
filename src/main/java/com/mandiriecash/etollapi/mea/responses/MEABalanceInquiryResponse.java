@@ -1,6 +1,7 @@
 package com.mandiriecash.etollapi.mea.responses;
 
 public class MEABalanceInquiryResponse {
+    public static final String SUCCESS = "SUCCESS";
     private String status;
     private String creditLimit;
     private String accountBalance;

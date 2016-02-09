@@ -8,6 +8,9 @@ import com.mandiriecash.etollapi.dao.UserDAO;
 import com.mandiriecash.etollapi.mea.MEAURLFactory;
 import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
+import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
+import com.mandiriecash.etollapi.mea.requests.MEABalanceInquiryRequest;
+import com.mandiriecash.etollapi.mea.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.mea.responses.MEALoginResponse;
 import com.mandiriecash.etollapi.mea.client.MEASyncRESTClient;
 import com.mandiriecash.etollapi.mea.client.MEASyncRESTClientImpl;
@@ -70,11 +73,19 @@ public class UserServiceImpl implements UserService{
         } else if (meaLoginResponse.getToken() == null || meaLoginResponse.getToken().isEmpty()){
             throw new MEALoginFailedException("Invalid password");
         }
+        //TODO Ichwan call database
         return meaLoginResponse.getToken();
     }
 
-    public long balanceInquiry(User user, String token) {
-        //tembak ke server mandiri hackathon
-        return 0;
+    public MEABalanceInquiryResponse balanceInquiry(String token,String msisdn)
+            throws MEAIOException, MEAUnknownErrorException {
+        MEABalanceInquiryResponse response = meaSyncRESTClient.balanceInquiry((new MEABalanceInquiryRequest.Builder()
+                .msisdn(msisdn)
+                .token(token)
+                .build()));
+        if (!response.getStatus().equals(MEABalanceInquiryResponse.SUCCESS)) {
+            throw new MEAUnknownErrorException();
+        }
+        return response;
     }
 }

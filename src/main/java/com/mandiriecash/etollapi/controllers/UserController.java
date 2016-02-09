@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
-import com.mandiriecash.etollapi.mea.responses.MEALoginResponse;
+import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
+import com.mandiriecash.etollapi.mea.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.services.UserService;
@@ -26,14 +27,15 @@ public class UserController {
 
     @RequestMapping(value="/user/{id}", method = RequestMethod.GET)
     public @ResponseBody
-    UserResponse getUserById(@PathVariable int id){
-        return new UserResponse("OK", "", userService.getUserById(id), "", 0);
+    LoginResponse getUserById(@PathVariable int id){
+        return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
     }
 
     @RequestMapping(value="/register", method = RequestMethod.POST)
-    public @ResponseBody UserResponse createUser(@RequestBody User user){
+    public @ResponseBody
+    LoginResponse createUser(@RequestBody User user){
         userService.createUser(user);
-        return new UserResponse("OK", "", new ArrayList<User>(), "", 0);
+        return new LoginResponse("OK", "", new ArrayList<User>(), "", 0);
     }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
@@ -41,31 +43,48 @@ public class UserController {
     /**
      * Example call: http://localhost:8080/ecashtollapi/login?msisdn=085712345678&credentials=xxxxxx
      */
-    public @ResponseBody UserResponse loginUser(
+    public @ResponseBody
+    LoginResponse loginUser(
             @RequestParam(name = "uid",required = false) String uid,
             @RequestParam(name = "msisdn",required = true) String msisdn,
             @RequestParam(name = "credentials",required = true) String credentials){
-        UserResponse userResponse;
+        LoginResponse loginResponse;
         try {
             //TODO uid buat apa???
             String token = userService.loginUser(uid,msisdn,credentials);
-            userResponse = new UserResponse(OK,"",null,token,0);
+            loginResponse = new LoginResponse(OK,"",null,token,0);
         } catch (IOException e) {
             if (e instanceof MEAIOException){
-                userResponse = new UserResponse(ERROR,"Error while contacting Mandiri ECash API");
+                loginResponse = new LoginResponse(ERROR,"Error while contacting Mandiri ECash API");
             } else {
-                userResponse = new UserResponse(ERROR,"Error while contacting Etoll API");
+                loginResponse = new LoginResponse(ERROR,"Error while contacting Etoll API");
             }
             e.printStackTrace();
         } catch (MEALoginFailedException e) {
-            userResponse = new UserResponse(ERROR,e.getMessage());
+            loginResponse = new LoginResponse(ERROR,e.getMessage());
         }
-        return userResponse;
+        return loginResponse;
     }
 
-    @RequestMapping(value="/balance", method = RequestMethod.POST)
-    public @ResponseBody UserResponse balanceUser(@RequestBody User user, @RequestBody String token){
-        return new UserResponse("OK", "", new ArrayList<User>(), "", userService.balanceInquiry(user, token));
+    @RequestMapping(value="/balance", method = RequestMethod.GET)
+    //TODO change to GET
+    public @ResponseBody BalanceResponse balanceUser(
+            @RequestParam(name = "token",required = true) String token,
+            @RequestParam(name = "msisdn",required = true) String msisdn){
+        BalanceResponse balanceResponse;
+        try {
+            MEABalanceInquiryResponse apiResponse = userService.balanceInquiry(token, msisdn);
+            balanceResponse = new BalanceResponse(OK,apiResponse.getAccountBalance(),apiResponse.getCreditLimit());
+        } catch (MEAUnknownErrorException e) {
+            e.printStackTrace();
+            //TODO change error message
+            balanceResponse = new BalanceResponse(ERROR,e.getMessage());
+        } catch (MEAIOException e) {
+            e.printStackTrace();
+            //TODO change error message
+            balanceResponse = new BalanceResponse(ERROR,e.getMessage());
+        }
+        return balanceResponse;
     }
 }
 
@@ -87,7 +106,7 @@ class LoginRequest{
     }
 }
 
-class UserResponse{
+class LoginResponse {
     public final String status;
     public final String message;
     //TODO ini apaan
@@ -95,7 +114,7 @@ class UserResponse{
     public final String token;
     public final long balance;
 
-    public UserResponse(String status,String message){
+    public LoginResponse(String status, String message){
         this.status = status;
         this.message = message;
         this.users = null;
@@ -103,11 +122,32 @@ class UserResponse{
         this.balance = 0;
     }
 
-    public UserResponse(String status, String message, List<User> users, String token, long balance){
+    public LoginResponse(String status, String message, List<User> users, String token, long balance){
         this.status = status;
         this.message = message;
         this.users = users;
         this.token = token;
         this.balance = balance;
+    }
+}
+
+class BalanceResponse{
+    public final String status;
+    public final String message;
+    public final String accountBalance;
+    public final String creditLimit;
+
+    public BalanceResponse(String status,String accountBalance,String creditLimit){
+        this.status = status;
+        this.message = null;
+        this.accountBalance = accountBalance;
+        this.creditLimit = creditLimit;
+    }
+
+    public BalanceResponse(String status,String message){
+        this.status = status;
+        this.message = message;
+        this.accountBalance = null;
+        this.creditLimit = null;
     }
 }
