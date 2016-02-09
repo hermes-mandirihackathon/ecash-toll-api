@@ -42,7 +42,7 @@ public class UserController {
      * Example call: http://localhost:8080/ecashtollapi/login?msisdn=085712345678&credentials=xxxxxx
      */
     public @ResponseBody UserResponse loginUser(
-            @RequestParam(name = "id",required = false) String uid,
+            @RequestParam(name = "uid",required = false) String uid,
             @RequestParam(name = "msisdn",required = true) String msisdn,
             @RequestParam(name = "credentials",required = true) String credentials){
         UserResponse userResponse;
