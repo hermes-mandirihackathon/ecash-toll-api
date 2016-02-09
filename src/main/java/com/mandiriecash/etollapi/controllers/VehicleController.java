@@ -17,36 +17,79 @@ import java.util.List;
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
-    public static final String STATUS_OK = "ok";
+
+    public static final String OK = "ok";
+    public static final String ERROR = "error";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public @ResponseBody  ListVehicleResponse getVehicles(){
-        //TODO impl
-        ListVehicleResponse response = new ListVehicleResponse(STATUS_OK,"",vehicleService.getVehicles());
+    public @ResponseBody ListVehicleResponse getVehicles(){
+        ListVehicleResponse response;
+        response = new ListVehicleResponse(OK,"",vehicleService.getVehicles());
         return response;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody  ListVehicleResponse createVehicle(@RequestBody Vehicle vehicle){
-        vehicleService.createVehicle(vehicle);
-        return new ListVehicleResponse(STATUS_OK,"",new ArrayList<Vehicle>());
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    //TODO change to GET
+    public @ResponseBody  CreateVehicleResponse createVehicle(
+            @RequestParam(name="msisdn") String msisdn,
+            @RequestParam(name="token") String token,
+            @RequestParam(name="name") String name,
+            @RequestParam(name="plate_no") String plate_no){
+        //TODO Ichwan change vehicle to have phone_no
+        Vehicle vehicle = new Vehicle();
+        vehicle.setName(name);
+        vehicle.setPlateNo(plate_no);
+        Integer vehicleId = vehicleService.createVehicle(vehicle);
+        return new CreateVehicleResponse(OK,"",vehicleId);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public @ResponseBody  ListVehicleResponse createVehicle(@PathVariable int id ,@RequestBody Vehicle vehicle){
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    //TODO change to GET
+    public @ResponseBody UpdateVehicleResponse updateVehicle(
+            @PathVariable int id,
+            @RequestParam(name="msisdn") String msisdn,
+            @RequestParam(name="token") String token,
+            @RequestParam(name="name") String name,
+            @RequestParam(name="plate_no") String plate_no){
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(id);
+        vehicle.setName(name);
+        vehicle.setPlateNo(plate_no);
         vehicleService.updateVehicle(vehicle);
-        return new ListVehicleResponse(STATUS_OK,"",new ArrayList<Vehicle>());
+        return new UpdateVehicleResponse(OK,"");
     }
 }
 
 class ListVehicleResponse {
-    public String status;
-    public String message;
-    public List<Vehicle> vehicles;
+    public final String status;
+    public final String message;
+    public final List<Vehicle> vehicles;
 
     public ListVehicleResponse(String status,String message,List<Vehicle> vehicles){
         this.status = status;
         this.message = message;
         this.vehicles = vehicles;
+    }
+}
+
+class CreateVehicleResponse {
+    public final String status;
+    public final String message;
+    public final int vehicleId;
+
+    public CreateVehicleResponse(String status, String message, int vehicleId){
+        this.status = status;
+        this.message = message;
+        this.vehicleId = vehicleId;
+    }
+}
+
+class UpdateVehicleResponse {
+    public final String status;
+    public final String message;
+
+    public UpdateVehicleResponse(String status,String message){
+        this.status = status;
+        this.message = message;
     }
 }

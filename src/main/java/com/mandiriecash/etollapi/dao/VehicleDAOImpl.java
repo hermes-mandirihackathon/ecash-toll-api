@@ -15,12 +15,13 @@ public class VehicleDAOImpl implements VehicleDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void createVehicle(Vehicle vehicle) {
+    public Integer createVehicle(Vehicle vehicle) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.save(vehicle);
+        Integer id = (Integer) session.save(vehicle);
         transaction.commit();
         session.close();
+        return id;
     }
 
     @SuppressWarnings("unchecked")
@@ -43,7 +44,7 @@ public class VehicleDAOImpl implements VehicleDAO {
 
     public Vehicle getVehicleById(int id) {
         Session session = sessionFactory.openSession();
-        Vehicle vehicle = (Vehicle) session.load(Vehicle.class, new Integer(id));
+        Vehicle vehicle = session.load(Vehicle.class, id);
         Transaction transaction = session.getTransaction();
         session.beginTransaction();
         transaction.commit();

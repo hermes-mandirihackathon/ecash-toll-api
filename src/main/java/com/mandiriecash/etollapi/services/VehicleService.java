@@ -8,9 +8,13 @@ import java.util.List;
  * Created by Ichwan Haryo Sembodo on 01/02/2016.
  */
 public interface VehicleService {
-    public void createVehicle(Vehicle vehicle);
+    /**
+     * @param vehicle vehicle
+     * @return  id of created vehicle
+     */
+    public Integer createVehicle(Vehicle vehicle);
     public List<Vehicle> getVehicles();
     public void updateVehicle(Vehicle vehicle);
-    public List<Vehicle> getVehicleById(int id);
+    public Vehicle getVehicleById(int id);
     public void deleteVehicle(int id);
 }

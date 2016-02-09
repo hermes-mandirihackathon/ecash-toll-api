@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +17,8 @@ public class VehicleServiceImpl implements VehicleService {
     @Autowired
     private VehicleDAO vehicleDAO;
 
-    public void createVehicle(Vehicle vehicle) {
-        vehicleDAO.createVehicle(vehicle);
+    public Integer createVehicle(Vehicle vehicle) {
+        return vehicleDAO.createVehicle(vehicle);
     }
 
     public List<Vehicle> getVehicles() {
@@ -30,10 +29,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleDAO.updateVehicle(vehicle);
     }
 
-    public List<Vehicle> getVehicleById(int id) {
-        List vehicles = new ArrayList<Vehicle>();
-        vehicles.add(vehicleDAO.getVehicleById(id));
-        return vehicles;
+    public Vehicle getVehicleById(int id) {
+        return vehicleDAO.getVehicleById(id);
     }
 
     public void deleteVehicle(int id) {
