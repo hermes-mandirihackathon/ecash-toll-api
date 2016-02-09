@@ -3,18 +3,17 @@ package com.mandiriecash.etollapi.services;
 /**
  * Created by Ichwan Haryo Sembodo on 31/01/2016.
  */
+import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClient;
+import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClientImpl;
+import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
+import com.github.yafithekid.mandiri_ecash_api.responses.MEALoginResponse;
 import com.google.gson.Gson;
 import com.mandiriecash.etollapi.dao.UserDAO;
-import com.mandiriecash.etollapi.mea.MEAURLFactory;
-import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.MEAURLFactory;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.requests.*;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
-import com.mandiriecash.etollapi.mea.requests.MEABalanceInquiryRequest;
-import com.mandiriecash.etollapi.mea.responses.MEABalanceInquiryResponse;
-import com.mandiriecash.etollapi.mea.responses.MEALoginResponse;
-import com.mandiriecash.etollapi.mea.client.MEASyncRESTClient;
-import com.mandiriecash.etollapi.mea.client.MEASyncRESTClientImpl;
-import com.mandiriecash.etollapi.mea.requests.MEALoginRequest;
 import com.mandiriecash.etollapi.models.User;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService{
         return meaLoginResponse.getToken();
     }
 
-    public MEABalanceInquiryResponse balanceInquiry(String token,String msisdn)
+    public MEABalanceInquiryResponse balanceInquiry(String token, String msisdn)
             throws MEAIOException, MEAUnknownErrorException {
         MEABalanceInquiryResponse response = meaSyncRESTClient.balanceInquiry((new MEABalanceInquiryRequest.Builder()
                 .msisdn(msisdn)

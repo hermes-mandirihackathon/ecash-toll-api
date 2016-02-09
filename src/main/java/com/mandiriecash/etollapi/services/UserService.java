@@ -1,9 +1,9 @@
 package com.mandiriecash.etollapi.services;
 
-import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
-import com.mandiriecash.etollapi.mea.responses.MEABalanceInquiryResponse;
+import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.models.User;
 
 import java.io.IOException;

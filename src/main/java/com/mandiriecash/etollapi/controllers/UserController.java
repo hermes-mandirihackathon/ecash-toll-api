@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mandiriecash.etollapi.mea.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
-import com.mandiriecash.etollapi.mea.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.services.UserService;
