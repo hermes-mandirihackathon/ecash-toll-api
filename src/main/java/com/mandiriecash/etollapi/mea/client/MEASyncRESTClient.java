@@ -7,7 +7,7 @@ import com.mandiriecash.etollapi.mea.responses.*;
 
 
 public interface MEASyncRESTClient {
-    public MEALoginResponse login(MEALoginRequest meaLoginRequest) throws MEAIOException, MEALoginFailedException;
+    public MEALoginResponse login(MEALoginRequest meaLoginRequest) throws MEAIOException;
 
     public MEALogoutResponse logout(MEALogoutRequest meaLogoutRequest) throws MEAIOException;
 

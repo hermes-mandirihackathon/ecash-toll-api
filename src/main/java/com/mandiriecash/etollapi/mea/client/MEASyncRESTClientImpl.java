@@ -16,7 +16,7 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
     MEAURLFactory meaurlFactory = new MEAURLFactory();
     private Gson gson = new Gson();
 
-    public MEALoginResponse login(MEALoginRequest meaLoginRequest) throws MEAIOException, MEALoginFailedException {
+    public MEALoginResponse login(MEALoginRequest meaLoginRequest) throws MEAIOException {
         Response response;
         try {
             response = okHttpClient.newCall(
