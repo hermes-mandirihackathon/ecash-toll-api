@@ -22,7 +22,7 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody  ActivityResponse createActivity(@RequestBody Activity activity){
         activityService.createActivity(activity);
         return new ActivityResponse("OK", "", new ArrayList<Activity>());

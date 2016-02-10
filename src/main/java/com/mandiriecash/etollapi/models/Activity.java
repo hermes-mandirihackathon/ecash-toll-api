@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Table(name = "activities")
 public class Activity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
     @Column(name = "time")

@@ -23,19 +23,20 @@ public class StaffController {
         return new StaffResponse("OK", "", staffService.getStaffs());
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody StaffResponse createStaff(@RequestBody Staff staff){
         staffService.createStaff(staff);
         return new StaffResponse("OK", "", new ArrayList<Staff>());
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody StaffResponse updateStaff(@PathVariable int id, @RequestBody Staff staff){
+        staff.setId(id);
         staffService.updateStaff(staff);
         return new StaffResponse("OK", "", new ArrayList<Staff>());
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
     public @ResponseBody StaffResponse deleteStaff(@RequestBody int id){
         staffService.deleteStaff(id);
         return new StaffResponse("OK", "", new ArrayList<Staff>());

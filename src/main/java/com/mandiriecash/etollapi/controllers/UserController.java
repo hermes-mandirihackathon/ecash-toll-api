@@ -31,7 +31,7 @@ public class UserController {
         return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
     }
 
-    @RequestMapping(value="/register", method = RequestMethod.POST)
+    @RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
     LoginResponse createUser(@RequestBody User user){
         userService.createUser(user);
