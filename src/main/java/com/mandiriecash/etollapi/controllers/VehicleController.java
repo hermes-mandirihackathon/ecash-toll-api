@@ -39,6 +39,7 @@ public class VehicleController {
         Vehicle vehicle = new Vehicle();
         vehicle.setName(name);
         vehicle.setPlateNo(plate_no);
+        vehicle.setMsisdn(msisdn);
         Integer vehicleId = vehicleService.createVehicle(vehicle);
         return new CreateVehicleResponse(OK,"",vehicleId);
     }
@@ -55,6 +56,7 @@ public class VehicleController {
         vehicle.setId(id);
         vehicle.setName(name);
         vehicle.setPlateNo(plate_no);
+        vehicle.setMsisdn(msisdn);
         vehicleService.updateVehicle(vehicle);
         return new UpdateVehicleResponse(OK,"");
     }

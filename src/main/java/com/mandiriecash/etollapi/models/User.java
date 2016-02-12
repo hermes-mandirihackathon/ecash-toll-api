@@ -17,8 +17,30 @@ public class User{
     @Column(name="id")
     private int id;
 
-    @Column(name="phone_no")
-    private String phone_no;
+    @Column(name="msisdn")
+    private String msisdn;
+
+    @Column(name="credentials")
+    private String credentials;
+
+    @Column(name="token")
+    private String token;
+
+    public String getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(String credentials) {
+        this.credentials = credentials;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public int getId() {
         return id;
@@ -26,16 +48,18 @@ public class User{
     public void setId(int id) {
         this.id = id;
     }
-    public String getPhone_no() {
-        return phone_no;
+
+    public String getMsisdn() {
+        return msisdn;
     }
-    public void setPhone_no(String phone_no) {
-        this.phone_no = phone_no;
+
+    public void setMsisdn(String msisdn) {
+        this.msisdn = msisdn;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", phone_no=" + phone_no + "]";
+        return "User [id=" + id + ", msisdn=" + msisdn + ", credentials=" + credentials + ", token=" +token+"]";
     }
 
 }

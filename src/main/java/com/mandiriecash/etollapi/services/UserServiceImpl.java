@@ -17,6 +17,7 @@ import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
 import com.mandiriecash.etollapi.models.User;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +49,9 @@ public class UserServiceImpl implements UserService{
     }
 
     public void createUser(User user) {
-        userDAO.createUser(user);
+       if(userDAO.getUserByMsisdn(user.getMsisdn()).getId() == 0){
+           userDAO.createUser(user);
+       }
     }
 
     /**
@@ -72,8 +75,17 @@ public class UserServiceImpl implements UserService{
         } else if (meaLoginResponse.getToken() == null || meaLoginResponse.getToken().isEmpty()){
             throw new MEALoginFailedException("Invalid password");
         }
-        //TODO Ichwan call database
-        return meaLoginResponse.getToken();
+        //TODO Ichwan call database (done)
+        String token = meaLoginResponse.getToken();
+        if(userDAO.getUserByMsisdn(msisdn).getId() == 0){
+            //register
+            User user = new User();
+            user.setMsisdn(msisdn);
+            user.setCredentials(credentials);
+            user.setToken(token);
+            createUser(user);
+        }
+        return token;
     }
 
     public MEABalanceInquiryResponse balanceInquiry(String token, String msisdn)

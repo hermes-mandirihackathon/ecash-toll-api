@@ -16,6 +16,16 @@ public class Vehicle
     private String plateNo;
     @Column(name = "photo_url")
     private String photoUrl;
+    @Column(name = "msisdn")
+    private String msisdn;
+
+    public String getMsisdn() {
+        return msisdn;
+    }
+
+    public void setMsisdn(String msisdn) {
+        this.msisdn = msisdn;
+    }
 
     public int getId() {
         return id;

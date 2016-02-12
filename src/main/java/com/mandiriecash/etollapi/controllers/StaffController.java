@@ -23,21 +23,34 @@ public class StaffController {
         return new StaffResponse("OK", "", staffService.getStaffs());
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody StaffResponse createStaff(@RequestBody Staff staff){
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public @ResponseBody StaffResponse createStaff(@RequestParam(name="email") String email,
+                                                   @RequestParam(name="password") String password,
+                                                   @RequestParam(name="toll_id") int toll_id){
+        Staff staff = new Staff();
+        staff.setEmail(email);
+        staff.setPassword(password);
+        staff.setToll_id(toll_id);
         staffService.createStaff(staff);
         return new StaffResponse("OK", "", new ArrayList<Staff>());
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody StaffResponse updateStaff(@PathVariable int id, @RequestBody Staff staff){
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    public @ResponseBody StaffResponse updateStaff(@PathVariable int id,
+                                                   @RequestParam(name="email") String email,
+                                                   @RequestParam(name="password") String password,
+                                                   @RequestParam(name="toll_id") int toll_id){
+        Staff staff = new Staff();
         staff.setId(id);
+        staff.setEmail(email);
+        staff.setPassword(password);
+        staff.setToll_id(toll_id);
         staffService.updateStaff(staff);
         return new StaffResponse("OK", "", new ArrayList<Staff>());
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = "application/json")
-    public @ResponseBody StaffResponse deleteStaff(@RequestBody int id){
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
+    public @ResponseBody StaffResponse deleteStaff(@PathVariable int id){
         staffService.deleteStaff(id);
         return new StaffResponse("OK", "", new ArrayList<Staff>());
     }

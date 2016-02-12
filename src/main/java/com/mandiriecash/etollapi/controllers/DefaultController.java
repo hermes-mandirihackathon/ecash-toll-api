@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class UserController {
+public class DefaultController {
     static final String OK = "ok";
     static final String ERROR = "error";
 
@@ -29,13 +29,6 @@ public class UserController {
     public @ResponseBody
     LoginResponse getUserById(@PathVariable int id){
         return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
-    }
-
-    @RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody
-    LoginResponse createUser(@RequestBody User user){
-        userService.createUser(user);
-        return new LoginResponse("OK", "", new ArrayList<User>(), "", 0);
     }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
