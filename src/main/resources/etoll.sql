@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 05 Feb 2016 pada 11.29
+-- Generation Time: 12 Feb 2016 pada 08.55
 -- Versi Server: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -62,6 +62,13 @@ CREATE TABLE `staffs` (
   `toll_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `staffs`
+--
+
+INSERT INTO `staffs` (`id`, `email`, `password`, `toll_id`) VALUES
+(1, 'testing@gmail.com', 'testing', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -88,37 +95,21 @@ INSERT INTO `tolls` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `phone_no` varchar(24) NOT NULL
+  `msisdn` varchar(24) NOT NULL,
+  `credentials` varchar(64) NOT NULL,
+  `token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `phone_no`) VALUES
-(1, '081234567890');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `user_tokens`
---
-
-CREATE TABLE `user_tokens` (
-  `user_id` int(11) NOT NULL,
-  `token` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `user_vehicles`
---
-
-CREATE TABLE `user_vehicles` (
-  `user_id` int(11) NOT NULL,
-  `vehicle_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `users` (`id`, `msisdn`, `credentials`, `token`) VALUES
+(1, '081234567890', '', ''),
+(2, '085728165503', '', ''),
+(3, '085712345678', '', ''),
+(4, '085712345679', '', ''),
+(5, '085712345677', '123456', 'token');
 
 -- --------------------------------------------------------
 
@@ -130,7 +121,8 @@ CREATE TABLE `vehicles` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `plate_no` varchar(16) NOT NULL,
-  `photo_url` varchar(128) NOT NULL
+  `photo_url` varchar(128) NOT NULL,
+  `msisdn` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -176,19 +168,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_tokens`
---
-ALTER TABLE `user_tokens`
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `user_vehicles`
---
-ALTER TABLE `user_vehicles`
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `vehicle_id` (`vehicle_id`);
-
---
 -- Indexes for table `vehicles`
 --
 ALTER TABLE `vehicles`
@@ -212,7 +191,7 @@ ALTER TABLE `prices`
 -- AUTO_INCREMENT for table `staffs`
 --
 ALTER TABLE `staffs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tolls`
 --
@@ -222,7 +201,7 @@ ALTER TABLE `tolls`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `vehicles`
 --
@@ -252,19 +231,6 @@ ALTER TABLE `prices`
 --
 ALTER TABLE `staffs`
   ADD CONSTRAINT `staffs_ibfk_1` FOREIGN KEY (`toll_id`) REFERENCES `tolls` (`id`);
-
---
--- Ketidakleluasaan untuk tabel `user_tokens`
---
-ALTER TABLE `user_tokens`
-  ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
---
--- Ketidakleluasaan untuk tabel `user_vehicles`
---
-ALTER TABLE `user_vehicles`
-  ADD CONSTRAINT `user_vehicles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `user_vehicles_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
