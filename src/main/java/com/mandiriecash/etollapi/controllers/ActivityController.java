@@ -17,11 +17,16 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/activities")
 public class ActivityController {
+    public final static String OK = "ok";
+    public final static String ERROR = "error";
     @Autowired
     private ActivityService activityService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public @ResponseBody  ActivityResponse createActivity(
+    public @ResponseBody
+    CreateActivityResponse createActivity(
+            @RequestParam(name="msisdn") String msisdn,
+            @RequestParam(name="token") String token,
             @RequestParam(name="timestamp") long timestamp,
             @RequestParam(name="vehicle_id") int vehicle_id,
             @RequestParam(name="source_toll_id") int source_toll_id,
@@ -34,23 +39,41 @@ public class ActivityController {
         activity.setDest_toll_id(dest_toll_id);
         activity.setPrice(price);
         activityService.createActivity(activity);
-        return new ActivityResponse("OK", "", new ArrayList<Activity>());
+        //TODO impl, return id of createActivity
+        //TODO if error
+        return new CreateActivityResponse(OK,"",1);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public @ResponseBody ActivityResponse getActivities(){
-        return new ActivityResponse("OK", "", activityService.getActivities());
+    public @ResponseBody GetActivityResponse getActivities(
+            @RequestParam(name="msisdn") String msisdn,
+            @RequestParam(name="token") String token
+    ){
+        //TODO impl based on msisdn
+        return new GetActivityResponse(OK, "", activityService.getActivities());
     }
 }
 
-class ActivityResponse{
-    public String status;
-    public String message;
-    public List<Activity> activities;
+class GetActivityResponse {
+    public final String status;
+    public final String message;
+    public final List<Activity> activities;
 
-    public ActivityResponse(String status, String message, List<Activity> activities){
+    public GetActivityResponse(String status, String message, List<Activity> activities){
         this.status = status;
         this.message = message;
         this.activities = activities;
+    }
+}
+
+class CreateActivityResponse {
+    public final String status;
+    public final String message;
+    public final int id;
+
+    public CreateActivityResponse(String status, String message, int id) {
+        this.status = status;
+        this.message = message;
+        this.id = id;
     }
 }
