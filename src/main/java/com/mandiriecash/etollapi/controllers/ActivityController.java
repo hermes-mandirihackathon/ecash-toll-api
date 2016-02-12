@@ -50,19 +50,92 @@ public class ActivityController {
             @RequestParam(name="token") String token
     ){
         //TODO impl based on msisdn
-        return new GetActivityResponse(OK, "", activityService.getActivities());
+        //TODO get vehicle name
+        List<Activity> activities = activityService.getActivities();
+
+        List<GetActivityResponse.LogActivity> logActivities = new ArrayList<GetActivityResponse.LogActivity>();
+        for(Activity activity: activities){
+            //TODO change lalala
+            logActivities.add(new GetActivityResponse.LogActivity(activity,"lalala"));
+        }
+        return new GetActivityResponse(OK, "",logActivities);
     }
 }
 
 class GetActivityResponse {
     public final String status;
     public final String message;
-    public final List<Activity> activities;
+    public final List<LogActivity> activities;
 
-    public GetActivityResponse(String status, String message, List<Activity> activities){
+    public GetActivityResponse(String status, String message, List<LogActivity> activities){
         this.status = status;
         this.message = message;
         this.activities = activities;
+    }
+
+    public static class LogActivity {
+        int id;
+        int source_toll_id;
+        int dest_toll_id;
+        int price;
+        String vehicle_name;
+        long timestamp;
+
+        public LogActivity(Activity activity,String vehicleName){
+            setId(activity.getId());
+            setSource_toll_id(activity.getSource_toll_id());
+            setDest_toll_id(activity.getDest_toll_id());
+            setPrice(activity.getPrice());
+            setVehicle_name(vehicleName);
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getSource_toll_id() {
+            return source_toll_id;
+        }
+
+        public void setSource_toll_id(int source_toll_id) {
+            this.source_toll_id = source_toll_id;
+        }
+
+        public int getDest_toll_id() {
+            return dest_toll_id;
+        }
+
+        public void setDest_toll_id(int dest_toll_id) {
+            this.dest_toll_id = dest_toll_id;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public String getVehicle_name() {
+            return vehicle_name;
+        }
+
+        public void setVehicle_name(String vehicle_name) {
+            this.vehicle_name = vehicle_name;
+        }
+
+        public long getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(long timestamp) {
+            this.timestamp = timestamp;
+        }
     }
 }
 
