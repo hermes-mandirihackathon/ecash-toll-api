@@ -25,11 +25,12 @@ public class DefaultController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value="/user/{id}", method = RequestMethod.GET)
-    public @ResponseBody
-    LoginResponse getUserById(@PathVariable int id){
-        return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
-    }
+//    TODO belum dipake
+//    @RequestMapping(value="/user/{id}", method = RequestMethod.GET)
+//    public @ResponseBody
+//    LoginResponse getUserById(@PathVariable int id){
+//        return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
+//    }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     //TODO change to POST
@@ -45,7 +46,7 @@ public class DefaultController {
         try {
             //TODO uid buat apa???
             String token = userService.loginUser(uid,msisdn,credentials);
-            loginResponse = new LoginResponse(OK,"",null,token,0);
+            loginResponse = new LoginResponse(OK,"",msisdn,token);
         } catch (IOException e) {
             if (e instanceof MEAIOException){
                 loginResponse = new LoginResponse(ERROR,"Error while contacting Mandiri ECash API");
@@ -102,25 +103,21 @@ class LoginRequest{
 class LoginResponse {
     public final String status;
     public final String message;
-    //TODO ini apaan
-    public final List<User> users;
+    public final String msisdn;
     public final String token;
-    public final long balance;
 
     public LoginResponse(String status, String message){
         this.status = status;
         this.message = message;
-        this.users = null;
         this.token = null;
-        this.balance = 0;
+        this.msisdn = null;
     }
 
-    public LoginResponse(String status, String message, List<User> users, String token, long balance){
+    public LoginResponse(String status, String message,String msisdn, String token){
         this.status = status;
         this.message = message;
-        this.users = users;
         this.token = token;
-        this.balance = balance;
+        this.msisdn = msisdn;
     }
 }
 
