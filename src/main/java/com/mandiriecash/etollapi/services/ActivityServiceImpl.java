@@ -18,12 +18,14 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityDAO activityDAO;
 
-    public void createActivity(Activity activity) {
-        activityDAO.createActivity(activity);
+    public int createActivity(Activity activity) {
+        return activityDAO.createActivity(activity);
     }
 
-    public List<Activity> getActivities() {
-        return activityDAO.getActivities();
+    public List<Activity> getActivities(String msisdn) {
+        List<Activity> activities = activityDAO.getActivities(msisdn);
+        if(activities.size() > 0 ) return activities;
+        else return new ArrayList<Activity>();
     }
 
     public List<Activity> getActivityById(int id) {

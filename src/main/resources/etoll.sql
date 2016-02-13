@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 12 Feb 2016 pada 08.55
+-- Generation Time: 13 Feb 2016 pada 09.33
 -- Versi Server: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -34,6 +34,13 @@ CREATE TABLE `activities` (
   `dest_toll_id` int(11) NOT NULL,
   `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `activities`
+--
+
+INSERT INTO `activities` (`id`, `time`, `vehicle_id`, `source_toll_id`, `dest_toll_id`, `price`) VALUES
+(3, '2016-02-12 17:00:00', 1, 1, 1, 1000);
 
 -- --------------------------------------------------------
 
@@ -121,9 +128,16 @@ CREATE TABLE `vehicles` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `plate_no` varchar(16) NOT NULL,
-  `photo_url` varchar(128) NOT NULL,
+  `photo_url` varchar(128) DEFAULT NULL,
   `msisdn` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `vehicles`
+--
+
+INSERT INTO `vehicles` (`id`, `name`, `plate_no`, `photo_url`, `msisdn`) VALUES
+(1, 'abraham', 'AB1234CD', NULL, '0812345678');
 
 --
 -- Indexes for dumped tables
@@ -181,7 +195,7 @@ ALTER TABLE `vehicles`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `prices`
 --
@@ -206,7 +220,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
@@ -215,7 +229,6 @@ ALTER TABLE `vehicles`
 -- Ketidakleluasaan untuk tabel `activities`
 --
 ALTER TABLE `activities`
-  ADD CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `user_vehicles` (`user_id`),
   ADD CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`source_toll_id`) REFERENCES `tolls` (`id`),
   ADD CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`dest_toll_id`) REFERENCES `tolls` (`id`);
 

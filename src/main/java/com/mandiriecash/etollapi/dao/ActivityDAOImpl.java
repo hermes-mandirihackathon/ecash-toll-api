@@ -4,6 +4,7 @@ import com.mandiriecash.etollapi.models.Activity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -15,22 +16,23 @@ public class ActivityDAOImpl implements ActivityDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void createActivity(Activity activity) {
+    public int createActivity(Activity activity) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(activity);
         transaction.commit();
         session.close();
+        return activity.getId();
     }
 
     @SuppressWarnings("unchecked")
-    public List<Activity> getActivities() {
+    public List<Activity> getActivities(String msisdn) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        List<Activity> activities = session.createCriteria(Activity.class).list();
+        List<Activity> results = session.createCriteria(Activity.class).add(Restrictions.eq("msisdn", msisdn)).list();
         transaction.commit();
         session.close();
-        return activities;
+        return results;
     }
 
     public Activity getActivityById(int id) {

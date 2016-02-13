@@ -1,7 +1,9 @@
 package com.mandiriecash.etollapi.controllers;
 
 import com.mandiriecash.etollapi.models.Activity;
+import com.mandiriecash.etollapi.models.Vehicle;
 import com.mandiriecash.etollapi.services.ActivityService;
+import com.mandiriecash.etollapi.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ public class ActivityController {
     public final static String ERROR = "error";
     @Autowired
     private ActivityService activityService;
+    @Autowired
+    private VehicleService vehicleService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public @ResponseBody
@@ -38,10 +42,9 @@ public class ActivityController {
         activity.setSource_toll_id(source_toll_id);
         activity.setDest_toll_id(dest_toll_id);
         activity.setPrice(price);
-        activityService.createActivity(activity);
         //TODO impl, return id of createActivity
         //TODO if error
-        return new CreateActivityResponse(OK,"",1);
+        return new CreateActivityResponse(OK,"",activityService.createActivity(activity));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -51,12 +54,13 @@ public class ActivityController {
     ){
         //TODO impl based on msisdn
         //TODO get vehicle name
-        List<Activity> activities = activityService.getActivities();
+        List<Activity> activities = activityService.getActivities(msisdn);
 
         List<GetActivityResponse.LogActivity> logActivities = new ArrayList<GetActivityResponse.LogActivity>();
         for(Activity activity: activities){
             //TODO change lalala
-            logActivities.add(new GetActivityResponse.LogActivity(activity,"lalala"));
+            Vehicle vehicle = vehicleService.getVehicleById(activity.getVehicle_id());
+            logActivities.add(new GetActivityResponse.LogActivity(activity,vehicle.getName()));
         }
         return new GetActivityResponse(OK, "",logActivities);
     }
