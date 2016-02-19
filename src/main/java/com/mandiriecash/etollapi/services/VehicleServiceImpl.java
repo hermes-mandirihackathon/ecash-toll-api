@@ -33,6 +33,10 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleDAO.getVehicleById(id);
     }
 
+    public Vehicle getVehicleByPlateNo(String plate_no) {
+        return vehicleDAO.getVehicleByPlateNo(plate_no);
+    }
+
     public void deleteVehicle(int id) {
         vehicleDAO.deleteVehicle(id);
     }

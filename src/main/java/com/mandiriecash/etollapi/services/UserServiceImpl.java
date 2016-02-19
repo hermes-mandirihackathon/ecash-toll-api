@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService{
         return users;
     }
 
+    public User getUserByMsisdn(String msisdn) {
+        return userDAO.getUserByMsisdn(msisdn);
+    }
+
     public void createUser(User user) {
        if(userDAO.getUserByMsisdn(user.getMsisdn()).getId() == 0){
            userDAO.createUser(user);

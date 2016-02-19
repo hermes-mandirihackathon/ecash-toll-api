@@ -15,6 +15,7 @@ import java.util.List;
 
 public interface UserService {
     public List<User> getUserById(int id);
+    public User getUserByMsisdn(String msisdn);
     public void createUser(User user);
     public String loginUser(String uid,String msisdn,String credentials) throws IOException, MEALoginFailedException;
     public MEABalanceInquiryResponse balanceInquiry(String token, String msisdn) throws MEAIOException, MEAUnknownErrorException;

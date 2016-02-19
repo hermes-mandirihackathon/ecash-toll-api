@@ -16,5 +16,6 @@ public interface VehicleService {
     public List<Vehicle> getVehicles();
     public void updateVehicle(Vehicle vehicle);
     public Vehicle getVehicleById(int id);
+    public Vehicle getVehicleByPlateNo(String plate_no);
     public void deleteVehicle(int id);
 }

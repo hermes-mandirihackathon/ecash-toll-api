@@ -1,8 +1,10 @@
 package com.mandiriecash.etollapi.controllers;
 
 import com.mandiriecash.etollapi.models.Activity;
+import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.models.Vehicle;
 import com.mandiriecash.etollapi.services.ActivityService;
+import com.mandiriecash.etollapi.services.UserService;
 import com.mandiriecash.etollapi.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,26 +28,37 @@ public class ActivityController {
     private ActivityService activityService;
     @Autowired
     private VehicleService vehicleService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public @ResponseBody
     CreateActivityResponse createActivity(
-            @RequestParam(name="msisdn") String msisdn,
-            @RequestParam(name="token") String token,
-            @RequestParam(name="timestamp") long timestamp,
-            @RequestParam(name="vehicle_id") int vehicle_id,
+            @RequestParam(name="plate_no") String plate_no,
             @RequestParam(name="source_toll_id") int source_toll_id,
             @RequestParam(name="dest_toll_id") int dest_toll_id,
             @RequestParam(name="price") int price){
-        Activity activity = new Activity();
-        activity.setTime(new Timestamp(timestamp));
-        activity.setVehicle_id(vehicle_id);
-        activity.setSource_toll_id(source_toll_id);
-        activity.setDest_toll_id(dest_toll_id);
-        activity.setPrice(price);
-        //TODO impl, return id of createActivity
-        //TODO if error
-        return new CreateActivityResponse(OK,"",activityService.createActivity(activity));
+        Vehicle vehicle = vehicleService.getVehicleByPlateNo(plate_no);
+        if(vehicle.getId() == 0){
+            return new CreateActivityResponse(ERROR, "PLATE NOMOR NOT FOUND", 0);
+        } else {
+            User user = userService.getUserByMsisdn(vehicle.getMsisdn());
+            if(user.getId() == 0){
+                return new CreateActivityResponse(ERROR, "USER NOT FOUND", 0);
+            }
+            else {
+                Activity activity = new Activity();
+                activity.setTime(new Timestamp(new Date().getTime()));
+                activity.setVehicle_id(vehicle.getId());
+                activity.setSource_toll_id(source_toll_id);
+                activity.setDest_toll_id(dest_toll_id);
+                activity.setPrice(price);
+                activity.setUser_id(user.getId());
+                //TODO impl, return id of createActivity
+                //TODO if error
+                return new CreateActivityResponse(OK, "", activityService.createActivity(activity));
+            }
+        }
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

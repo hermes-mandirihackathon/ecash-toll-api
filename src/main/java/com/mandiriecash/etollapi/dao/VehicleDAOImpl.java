@@ -4,6 +4,7 @@ import com.mandiriecash.etollapi.models.Vehicle;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -49,6 +50,21 @@ public class VehicleDAOImpl implements VehicleDAO {
         session.beginTransaction();
         transaction.commit();
         return vehicle;
+    }
+
+    public Vehicle getVehicleByPlateNo(String plate_no) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        List<Vehicle> results = session.createCriteria(Vehicle.class).add(Restrictions.eq("plateNo", plate_no)).list();
+        transaction.commit();
+        session.close();
+        if(results.size() > 0){
+            return results.get(0);
+        }
+        else {
+            Vehicle vehicle = new Vehicle();
+            return vehicle;
+        }
     }
 
     public void deleteVehicle(int id) {
