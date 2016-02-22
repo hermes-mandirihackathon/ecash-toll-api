@@ -69,6 +69,7 @@ CREATE TABLE `staffs` (
   `password` varchar(64) NOT NULL,
   `toll_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `staffs` ADD COLUMN `token` VARCHAR (255) DEFAULT NULL;
 
 --
 -- Dumping data untuk tabel `staffs`

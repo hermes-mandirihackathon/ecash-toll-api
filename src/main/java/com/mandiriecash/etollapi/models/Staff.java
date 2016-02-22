@@ -19,6 +19,8 @@ public class Staff {
     private String password;
     @Column(name="toll_id")
     private int toll_id;
+    @Column(name="token",nullable = true)
+    private String token;
 
     public int getId() {
         return id;
@@ -50,5 +52,13 @@ public class Staff {
 
     public void setToll_id(int toll_id) {
         this.toll_id = toll_id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

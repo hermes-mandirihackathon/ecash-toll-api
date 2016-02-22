@@ -1,5 +1,6 @@
 package com.mandiriecash.etollapi.services;
 
+import com.mandiriecash.etollapi.exceptions.InvalidCredentialsException;
 import com.mandiriecash.etollapi.models.Staff;
 
 import java.util.List;
@@ -13,4 +14,13 @@ public interface StaffService {
     public List<Staff> getStaffById(int id);
     public void deleteStaff(int id);
     public List<Staff> getStaffs();
+
+    /**
+     * Return token if email and password exists
+     * @param email
+     * @param password
+     * @return
+     * @throws InvalidCredentialsException
+     */
+    String login(String email,String password) throws InvalidCredentialsException;
 }

@@ -13,4 +13,19 @@ public interface StaffDAO {
     public Staff getStaffById(int id);
     public void deleteStaff(int id);
     public List<Staff> getStaffs();
+
+    /**
+     * Return id of user if found. return null if not exist
+     * @param email emaill
+     * @param password password
+     * @return id
+     */
+    public Integer findByEmailAndPassword(String email, String password);
+
+    /**
+     * Update user id token
+     * @param id user id
+     * @param token token
+     */
+    void updateToken(Integer id,String token);
 }
