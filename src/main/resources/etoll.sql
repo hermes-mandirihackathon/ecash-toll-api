@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 13 Feb 2016 pada 09.33
+-- Generation Time: 22 Feb 2016 pada 03.44
 -- Versi Server: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -32,15 +32,16 @@ CREATE TABLE `activities` (
   `vehicle_id` int(11) NOT NULL,
   `source_toll_id` int(11) NOT NULL,
   `dest_toll_id` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `price` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `activities`
 --
 
-INSERT INTO `activities` (`id`, `time`, `vehicle_id`, `source_toll_id`, `dest_toll_id`, `price`) VALUES
-(3, '2016-02-12 17:00:00', 1, 1, 1, 1000);
+INSERT INTO `activities` (`id`, `time`, `vehicle_id`, `source_toll_id`, `dest_toll_id`, `price`, `user_id`) VALUES
+(4, '2016-02-19 16:21:07', 5, 1, 1, 1000, 1);
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,7 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`id`, `name`, `plate_no`, `photo_url`, `msisdn`) VALUES
-(1, 'abraham', 'AB1234CD', NULL, '0812345678');
+(5, 'abraham', 'AB1234CD', NULL, '081234567890');
 
 --
 -- Indexes for dumped tables
@@ -150,6 +151,8 @@ ALTER TABLE `activities`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `vehicle_id` (`vehicle_id`,`source_toll_id`,`dest_toll_id`),
   ADD UNIQUE KEY `vehicle_id_2` (`vehicle_id`,`source_toll_id`,`dest_toll_id`),
+  ADD UNIQUE KEY `vehicle_id_4` (`vehicle_id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
   ADD KEY `vehicle_id_3` (`vehicle_id`,`source_toll_id`,`dest_toll_id`),
   ADD KEY `source_toll_id` (`source_toll_id`),
   ADD KEY `dest_toll_id` (`dest_toll_id`);
@@ -179,13 +182,15 @@ ALTER TABLE `tolls`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `msisdn` (`msisdn`);
 
 --
 -- Indexes for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `msisdn` (`msisdn`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -195,7 +200,7 @@ ALTER TABLE `vehicles`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `prices`
 --
@@ -220,7 +225,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
@@ -230,7 +235,9 @@ ALTER TABLE `vehicles`
 --
 ALTER TABLE `activities`
   ADD CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`source_toll_id`) REFERENCES `tolls` (`id`),
-  ADD CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`dest_toll_id`) REFERENCES `tolls` (`id`);
+  ADD CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`dest_toll_id`) REFERENCES `tolls` (`id`),
+  ADD CONSTRAINT `activities_ibfk_4` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`),
+  ADD CONSTRAINT `activities_ibfk_5` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Ketidakleluasaan untuk tabel `prices`
@@ -244,6 +251,12 @@ ALTER TABLE `prices`
 --
 ALTER TABLE `staffs`
   ADD CONSTRAINT `staffs_ibfk_1` FOREIGN KEY (`toll_id`) REFERENCES `tolls` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `vehicles`
+--
+ALTER TABLE `vehicles`
+  ADD CONSTRAINT `vehicles_ibfk_1` FOREIGN KEY (`msisdn`) REFERENCES `users` (`msisdn`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

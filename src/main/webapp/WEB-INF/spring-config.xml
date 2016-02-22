@@ -15,9 +15,9 @@
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url"
-                  value="jdbc:mysql://localhost:3306/etoll" />
-        <property name="username" value="etoll" />
-        <property name="password" value="etoll" />
+                  value="jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_8ea98366d329913" />
+        <property name="username" value="b1b5cf1b3448a1" />
+        <property name="password" value="1ae03adc" />
     </bean>
 
     <!-- Hibernate 5 SessionFactory Bean definition -->
