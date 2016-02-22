@@ -2,6 +2,7 @@ package com.mandiriecash.etollapi.services;
 
 import com.mandiriecash.etollapi.dao.StaffDAO;
 import com.mandiriecash.etollapi.exceptions.InvalidCredentialsException;
+import com.mandiriecash.etollapi.exceptions.staffs.TokenStaffNotFoundException;
 import com.mandiriecash.etollapi.models.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,13 @@ public class StaffServiceImpl implements StaffService {
         String token = UUID.randomUUID().toString();
         staffDAO.updateToken(id,token );
         return token;
+    }
+
+    public Staff getStaffByToken(String token) throws TokenStaffNotFoundException {
+        Staff staff= staffDAO.getStaffByToken(token);
+        if (staff == null){
+            throw new TokenStaffNotFoundException(token);
+        }
+        return staff;
     }
 }

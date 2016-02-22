@@ -94,4 +94,26 @@ public class StaffDAOImpl implements StaffDAO {
             session.close();
         }
     }
+
+    public Staff getStaffByToken(String token) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Staff staff = null;
+        try {
+            transaction = session.beginTransaction();
+            List<Staff> list = session.createCriteria(Staff.class)
+                    .add(Restrictions.eq("token", token))
+                    .list();
+            if (!list.isEmpty()){
+                staff = list.get(0);
+            }
+            transaction.commit();
+        } catch (HibernateException e){
+            e.printStackTrace();
+            if (transaction != null) transaction.rollback();
+        } finally {
+            session.close();
+        }
+        return staff;
+    }
 }

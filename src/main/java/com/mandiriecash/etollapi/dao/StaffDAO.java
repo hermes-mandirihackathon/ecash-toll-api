@@ -28,4 +28,11 @@ public interface StaffDAO {
      * @param token token
      */
     void updateToken(Integer id,String token);
+
+    /**
+     * Return staff based on token. Return null if not exist
+     * @param token token
+     * @return staff
+     */
+    Staff getStaffByToken(String token);
 }

@@ -1,6 +1,7 @@
 package com.mandiriecash.etollapi.services;
 
 import com.mandiriecash.etollapi.exceptions.InvalidCredentialsException;
+import com.mandiriecash.etollapi.exceptions.staffs.TokenStaffNotFoundException;
 import com.mandiriecash.etollapi.models.Staff;
 
 import java.util.List;
@@ -23,4 +24,12 @@ public interface StaffService {
      * @throws InvalidCredentialsException
      */
     String login(String email,String password) throws InvalidCredentialsException;
+
+    /**
+     * Return staff if there is a staff with given token
+     * @param token
+     * @return
+     * @throws TokenStaffNotFoundException
+     */
+    Staff getStaffByToken(String token) throws TokenStaffNotFoundException;
 }
