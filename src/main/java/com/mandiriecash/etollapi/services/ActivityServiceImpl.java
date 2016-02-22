@@ -1,6 +1,10 @@
 package com.mandiriecash.etollapi.services;
 
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
 import com.mandiriecash.etollapi.dao.ActivityDAO;
+import com.mandiriecash.etollapi.exceptions.ActivityNotFoundException;
+import com.mandiriecash.etollapi.exceptions.CreateActivityException;
+import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.models.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +22,20 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityDAO activityDAO;
 
-    public int createActivity(Activity activity) {
-        return activityDAO.createActivity(activity);
+
+    @Autowired
+    private PaymentService paymentService;
+
+    public int createActivity(Activity activity,String plateNo,String msisdn, String credentials,String token) throws CreateActivityException {
+        int activityId = activityDAO.createActivity(activity);
+        try {
+            paymentService.payToll(msisdn,credentials,token,
+                    activityId,activity.getSource_toll_id(),activity.getDest_toll_id(),activity.getPrice(),plateNo);
+        } catch (PaymentErrorException e) {
+            //TODO delete if failed
+            throw new CreateActivityException(e);
+        }
+        return activityId;
     }
 
     public List<Activity> getActivities(String msisdn) {
@@ -28,9 +44,9 @@ public class ActivityServiceImpl implements ActivityService {
         else return new ArrayList<Activity>();
     }
 
-    public List<Activity> getActivityById(int id) {
-        List activities = new ArrayList<Activity>();
-        activities.add(activityDAO.getActivityById(id));
-        return activities;
+    public Activity getActivityById(int id) throws ActivityNotFoundException{
+        Activity activity = activityDAO.getActivityById(id);
+        if (activity == null) throw new ActivityNotFoundException(id);
+        return activity;
     }
 }

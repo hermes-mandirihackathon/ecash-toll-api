@@ -10,5 +10,11 @@ import java.util.List;
 public interface ActivityDAO {
     public int createActivity(Activity activity);
     public List<Activity> getActivities(String msisdn);
+
+    /**
+     * Return activity. return null if not exist
+     * @param id activity id
+     * @return
+     */
     public Activity getActivityById(int id);
 }

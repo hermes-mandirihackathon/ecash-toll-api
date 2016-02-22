@@ -12,6 +12,7 @@ import com.mandiriecash.etollapi.dao.UserDAO;
 import com.github.yafithekid.mandiri_ecash_api.MEAURLFactory;
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
 import com.github.yafithekid.mandiri_ecash_api.requests.*;
+import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
 import com.mandiriecash.etollapi.models.User;
@@ -31,25 +32,19 @@ public class UserServiceImpl implements UserService{
     private UserDAO userDAO;
 
     @Autowired
-    private Gson gson;
+    private MEASyncRESTClient meaSyncRESTClient;
 
-    MEASyncRESTClient meaSyncRESTClient = new MEASyncRESTClientImpl();
-    private OkHttpClient okHttpClient = new OkHttpClient();
-
-    @Autowired
-    private MEAURLFactory mandiriECashAPIURLFactory;
-
-    public List<User> getUserById(int id) {
-        // TODO Auto-generated method stub
-        List users = new ArrayList<User>();
+    public User getUserById(int id) throws UserNotFoundException {
         User user = userDAO.getUserById(id);
-        System.out.println(user.toString());
-        users.add(user);
-        return users;
+        if (user == null) throw new UserNotFoundException(id);
+        return user;
     }
 
-    public User getUserByMsisdn(String msisdn) {
-        return userDAO.getUserByMsisdn(msisdn);
+    @Override
+    public User getUserByMsisdn(String msisdn) throws UserNotFoundException {
+        User user = userDAO.getUserByMsisdn(msisdn);
+        if (user == null) throw new UserNotFoundException(msisdn);
+        return user;
     }
 
     public void createUser(User user) {

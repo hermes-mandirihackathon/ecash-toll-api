@@ -1,6 +1,7 @@
 package com.mandiriecash.etollapi.services;
 
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
 import com.mandiriecash.etollapi.mea.exceptions.MEALoginFailedException;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
 import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
@@ -14,8 +15,8 @@ import java.util.List;
  */
 
 public interface UserService {
-    public List<User> getUserById(int id);
-    public User getUserByMsisdn(String msisdn);
+    public User getUserById(int id) throws UserNotFoundException;
+    public User getUserByMsisdn(String msisdn) throws UserNotFoundException;
     public void createUser(User user);
     public String loginUser(String uid,String msisdn,String credentials) throws IOException, MEALoginFailedException;
     public MEABalanceInquiryResponse balanceInquiry(String token, String msisdn) throws MEAIOException, MEAUnknownErrorException;

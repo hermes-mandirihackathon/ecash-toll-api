@@ -57,9 +57,13 @@
     <bean id="priceDAO" class="com.mandiriecash.etollapi.dao.PriceDAOImpl"> </bean>
     <bean id="priceService" class="com.mandiriecash.etollapi.services.PriceServiceImpl"></bean>
 
+    <bean class="com.mandiriecash.etollapi.services.PaymentServiceImpl"/>
+
     <bean id="mEAURLFactory" class="com.github.yafithekid.mandiri_ecash_api.MEAURLFactory"/>
+    <bean class="com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClientImpl"/>
 
     <bean id="gson" class="com.google.gson.Gson"/>
+
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

@@ -37,10 +37,11 @@ public class ActivityDAOImpl implements ActivityDAO {
 
     public Activity getActivityById(int id) {
         Session session = sessionFactory.openSession();
-        Activity activity = (Activity) session.load(Activity.class, new Integer(id));
+        Activity activity = (Activity) session.load(Activity.class,id);
         Transaction transaction = session.getTransaction();
         session.beginTransaction();
         transaction.commit();
+        session.close();
         return activity;
     }
 }

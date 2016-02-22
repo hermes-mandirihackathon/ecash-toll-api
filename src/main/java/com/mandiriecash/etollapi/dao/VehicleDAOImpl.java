@@ -62,8 +62,7 @@ public class VehicleDAOImpl implements VehicleDAO {
             return results.get(0);
         }
         else {
-            Vehicle vehicle = new Vehicle();
-            return vehicle;
+            return null;
         }
     }
 

@@ -8,5 +8,11 @@ import com.mandiriecash.etollapi.models.User;
 public interface UserDAO {
     public User getUserById(int id);
     public void createUser(User user);
+
+    /**
+     * Return user. return null if doesn't exist.
+     * @param msisdn
+     * @return
+     */
     public User getUserByMsisdn(String msisdn);
 }

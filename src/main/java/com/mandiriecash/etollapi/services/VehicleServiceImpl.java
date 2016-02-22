@@ -1,6 +1,7 @@
 package com.mandiriecash.etollapi.services;
 
 import com.mandiriecash.etollapi.dao.VehicleDAO;
+import com.mandiriecash.etollapi.exceptions.VehicleNotFoundException;
 import com.mandiriecash.etollapi.models.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,10 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleDAO.getVehicleById(id);
     }
 
-    public Vehicle getVehicleByPlateNo(String plate_no) {
-        return vehicleDAO.getVehicleByPlateNo(plate_no);
+    public Vehicle getVehicleByPlateNo(String plate_no) throws VehicleNotFoundException {
+        Vehicle vehicle = vehicleDAO.getVehicleByPlateNo(plate_no);
+        if (vehicle == null) throw new VehicleNotFoundException(plate_no);
+        return vehicle;
     }
 
     public void deleteVehicle(int id) {

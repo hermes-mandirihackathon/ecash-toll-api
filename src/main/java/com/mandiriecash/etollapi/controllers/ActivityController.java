@@ -1,5 +1,8 @@
 package com.mandiriecash.etollapi.controllers;
 
+import com.mandiriecash.etollapi.exceptions.CreateActivityException;
+import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
+import com.mandiriecash.etollapi.exceptions.VehicleNotFoundException;
 import com.mandiriecash.etollapi.models.Activity;
 import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.models.Vehicle;
@@ -38,27 +41,31 @@ public class ActivityController {
             @RequestParam(name="source_toll_id") int source_toll_id,
             @RequestParam(name="dest_toll_id") int dest_toll_id,
             @RequestParam(name="price") int price){
-        Vehicle vehicle = vehicleService.getVehicleByPlateNo(plate_no);
-        if(vehicle.getId() == 0){
-            return new CreateActivityResponse(ERROR, "PLATE NOMOR NOT FOUND", 0);
-        } else {
+        CreateActivityResponse response;
+        try {
+            Vehicle vehicle = vehicleService.getVehicleByPlateNo(plate_no);
             User user = userService.getUserByMsisdn(vehicle.getMsisdn());
-            if(user.getId() == 0){
-                return new CreateActivityResponse(ERROR, "USER NOT FOUND", 0);
-            }
-            else {
-                Activity activity = new Activity();
-                activity.setTime(new Timestamp(new Date().getTime()));
-                activity.setVehicle_id(vehicle.getId());
-                activity.setSource_toll_id(source_toll_id);
-                activity.setDest_toll_id(dest_toll_id);
-                activity.setPrice(price);
-                activity.setUser_id(user.getId());
-                //TODO impl, return id of createActivity
-                //TODO if error
-                return new CreateActivityResponse(OK, "", activityService.createActivity(activity));
-            }
+            Activity activity = new Activity();
+            activity.setTime(new Timestamp(new Date().getTime()));
+            activity.setVehicle_id(vehicle.getId());
+            activity.setSource_toll_id(source_toll_id);
+            activity.setDest_toll_id(dest_toll_id);
+            activity.setPrice(price);
+            activity.setUser_id(user.getId());
+
+            int activityId = activityService.createActivity(activity, plate_no,
+                    vehicle.getMsisdn(), user.getCredentials(), user.getToken());
+
+            return new CreateActivityResponse(OK, "",activityId);
+        } catch (VehicleNotFoundException e) {
+            response = new CreateActivityResponse(ERROR,e.getMessage(),0);
+        } catch (UserNotFoundException e) {
+            response = new CreateActivityResponse(ERROR,e.getMessage(),0);
+        } catch (CreateActivityException e) {
+            e.printStackTrace();
+            response = new CreateActivityResponse(ERROR,e.getMessage(),0);
         }
+        return response;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

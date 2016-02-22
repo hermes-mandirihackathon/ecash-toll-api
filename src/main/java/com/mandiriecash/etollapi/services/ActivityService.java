@@ -1,14 +1,14 @@
 package com.mandiriecash.etollapi.services;
 
+import com.mandiriecash.etollapi.exceptions.ActivityNotFoundException;
+import com.mandiriecash.etollapi.exceptions.CreateActivityException;
 import com.mandiriecash.etollapi.models.Activity;
 
 import java.util.List;
 
-/**
- * Created by Ichwan Haryo Sembodo on 01/02/2016.
- */
 public interface ActivityService {
-    public int createActivity(Activity activity);
+    public int createActivity(Activity activity,String plateNo,String msisdn, String credentials,String token)
+            throws CreateActivityException;
     public List<Activity> getActivities(String msisdn);
-    public List<Activity> getActivityById(int id);
+    public Activity getActivityById(int id) throws ActivityNotFoundException;
 }

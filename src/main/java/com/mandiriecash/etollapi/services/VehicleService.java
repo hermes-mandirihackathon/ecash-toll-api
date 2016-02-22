@@ -1,5 +1,6 @@
 package com.mandiriecash.etollapi.services;
 
+import com.mandiriecash.etollapi.exceptions.VehicleNotFoundException;
 import com.mandiriecash.etollapi.models.Vehicle;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface VehicleService {
     public List<Vehicle> getVehicles();
     public void updateVehicle(Vehicle vehicle);
     public Vehicle getVehicleById(int id);
-    public Vehicle getVehicleByPlateNo(String plate_no);
+    public Vehicle getVehicleByPlateNo(String plate_no) throws VehicleNotFoundException;
     public void deleteVehicle(int id);
 }

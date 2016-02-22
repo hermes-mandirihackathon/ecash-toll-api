@@ -45,8 +45,7 @@ public class UserDAOImpl implements UserDAO {
             return results.get(0);
         }
         else {
-            User user = new User();
-            return user;
+            return null;
         }
     }
 

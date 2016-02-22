@@ -17,6 +17,12 @@ public interface VehicleDAO {
     public List<Vehicle> getVehicles();
     public void updateVehicle(Vehicle vehicle);
     public Vehicle getVehicleById(int id);
+
+    /**
+     * Return vehicle based on plate number. Return null if not exists
+     * @param plate_no
+     * @return
+     */
     public Vehicle getVehicleByPlateNo(String plate_no);
     public void deleteVehicle(int id);
 }
