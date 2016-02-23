@@ -26,10 +26,13 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Vehicle> getVehicles() {
+    @Override
+    public List<Vehicle> getVehiclesByMsisdn(String msisdn) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        List<Vehicle> vehicles = session.createCriteria(Vehicle.class).list();
+        List<Vehicle> vehicles = session.createCriteria(Vehicle.class)
+                .add(Restrictions.eq("msisdn",msisdn))
+                .list();
         transaction.commit();
         session.close();
         return vehicles;

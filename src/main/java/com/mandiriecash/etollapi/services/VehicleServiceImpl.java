@@ -22,8 +22,9 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleDAO.createVehicle(vehicle);
     }
 
-    public List<Vehicle> getVehicles() {
-        return vehicleDAO.getVehicles();
+    @Override
+    public List<Vehicle> getVehiclesByMsisdn(String msisdn) {
+        return vehicleDAO.getVehiclesByMsisdn(msisdn);
     }
 
     public void updateVehicle(Vehicle vehicle) {

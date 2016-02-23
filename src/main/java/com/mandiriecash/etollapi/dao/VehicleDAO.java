@@ -14,7 +14,7 @@ public interface VehicleDAO {
      * @return created vehicle id
      */
     public Integer createVehicle(Vehicle vehicle);
-    public List<Vehicle> getVehicles();
+    public List<Vehicle> getVehiclesByMsisdn(String msisdn);
     public void updateVehicle(Vehicle vehicle);
     public Vehicle getVehicleById(int id);
 

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +21,12 @@ public class VehicleController {
     public static final String ERROR = "error";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public @ResponseBody ListVehicleResponse getVehicles(){
+    public @ResponseBody ListVehicleResponse getVehicles(
+            @RequestParam(name = "msisdn") String msisdn,
+            @RequestParam(name = "token") String token
+    ){
         ListVehicleResponse response;
-        response = new ListVehicleResponse(OK,"",vehicleService.getVehicles());
+        response = new ListVehicleResponse(OK,"",vehicleService.getVehiclesByMsisdn(msisdn));
         return response;
     }
 
