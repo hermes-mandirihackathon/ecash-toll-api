@@ -48,9 +48,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public void createUser(User user) {
-       if(userDAO.getUserByMsisdn(user.getMsisdn()).getId() == 0){
            userDAO.createUser(user);
-       }
     }
 
     /**
@@ -76,8 +74,11 @@ public class UserServiceImpl implements UserService{
         }
         //TODO Ichwan call database (done)
         String token = meaLoginResponse.getToken();
-        if(userDAO.getUserByMsisdn(msisdn).getId() == 0){
-            //register
+        System.out.println("sampe sini + token : " + token);
+        try {
+            this.getUserByMsisdn(msisdn);
+        } catch (UserNotFoundException e) {
+            System.out.println("user not exist");
             User user = new User();
             user.setMsisdn(msisdn);
             user.setCredentials(credentials);
