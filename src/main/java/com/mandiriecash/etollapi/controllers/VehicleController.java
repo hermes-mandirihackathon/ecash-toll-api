@@ -42,6 +42,7 @@ public class VehicleController {
         vehicle.setName(name);
         vehicle.setPlateNo(plate_no);
         vehicle.setMsisdn(msisdn);
+        vehicle.setPhotoUrl("http://lorempixel.com/200/200/transport/");
         Integer vehicleId = vehicleService.createVehicle(vehicle);
         return new CreateVehicleResponse(OK,"",vehicleId);
     }
