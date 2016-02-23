@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ActivityDAO {
     public int createActivity(Activity activity);
-    public List<Activity> getActivities(String msisdn);
+    public List<Activity> getActivitiesByUserId(int userId);
 
     /**
      * Return activity. return null if not exist

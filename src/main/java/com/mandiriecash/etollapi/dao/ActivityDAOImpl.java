@@ -26,10 +26,10 @@ public class ActivityDAOImpl implements ActivityDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Activity> getActivities(String msisdn) {
+    public List<Activity> getActivitiesByUserId(int userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        List<Activity> results = session.createCriteria(Activity.class).add(Restrictions.eq("msisdn", msisdn)).list();
+        List<Activity> results = session.createCriteria(Activity.class).add(Restrictions.eq("user_id", userId)).list();
         transaction.commit();
         session.close();
         return results;

@@ -1,11 +1,12 @@
 package com.mandiriecash.etollapi.services;
 
-import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
 import com.mandiriecash.etollapi.dao.ActivityDAO;
+import com.mandiriecash.etollapi.dao.UserDAO;
 import com.mandiriecash.etollapi.exceptions.ActivityNotFoundException;
 import com.mandiriecash.etollapi.exceptions.CreateActivityException;
 import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.models.Activity;
+import com.mandiriecash.etollapi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityDAO activityDAO;
+    @Autowired
+    UserDAO userDAO;
 
 
     @Autowired
@@ -39,7 +42,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     public List<Activity> getActivities(String msisdn) {
-        List<Activity> activities = activityDAO.getActivities(msisdn);
+        User user = userDAO.getUserByMsisdn(msisdn);
+        List<Activity> activities = activityDAO.getActivitiesByUserId(user.getId());
         if(activities.size() > 0 ) return activities;
         else return new ArrayList<Activity>();
     }
