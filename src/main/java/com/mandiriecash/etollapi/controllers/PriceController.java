@@ -17,19 +17,21 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/prices")
 public class PriceController {
+    public final static String OK = "ok";
+    public final static String ERROR = "error";
     @Autowired
     private PriceService priceService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody
     PriceResponse getPrice(@PathVariable int id){
-        return new PriceResponse("OK", "", priceService.getPriceById(id));
+        return new PriceResponse(OK, "", priceService.getPriceById(id));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
     PriceResponse getPrices(){
-        return new PriceResponse("OK", "", priceService.getPrices());
+        return new PriceResponse(OK, "", priceService.getPrices());
     }
 }
 

@@ -25,7 +25,7 @@ public class StaffController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody  StaffResponse getStaffs(){
-        return new StaffResponse("OK", "", staffService.getStaffs());
+        return new StaffResponse(OK, "", staffService.getStaffs());
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)

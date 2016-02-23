@@ -17,12 +17,15 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/tolls")
 public class TollController {
+    public static final String OK = "ok";
+    public static final String ERROR = "error";
+
     @Autowired
     private TollService tollService;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     public @ResponseBody TollResponse getTolls(){
-        TollResponse response = new TollResponse("OK", "", tollService.getTolls());
+        TollResponse response = new TollResponse(OK, "", tollService.getTolls());
         return response;
     }
 }

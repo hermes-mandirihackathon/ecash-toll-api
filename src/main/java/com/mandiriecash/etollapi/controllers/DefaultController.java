@@ -29,7 +29,7 @@ public class DefaultController {
 //    @RequestMapping(value="/user/{id}", method = RequestMethod.GET)
 //    public @ResponseBody
 //    LoginResponse getUserById(@PathVariable int id){
-//        return new LoginResponse("OK", "", userService.getUserById(id), "", 0);
+//        return new LoginResponse(OK, "", userService.getUserById(id), "", 0);
 //    }
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
