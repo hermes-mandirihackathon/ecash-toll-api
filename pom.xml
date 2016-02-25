@@ -81,11 +81,11 @@
             <artifactId>gson</artifactId>
             <version>2.5</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.yafithekid</groupId>
-            <artifactId>mandiri-ecash-api-java</artifactId>
-            <version>c4a948b8b799c02f01d528459924941977cb4854</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.yafithekid</groupId>-->
+            <!--<artifactId>mandiri-ecash-api-java</artifactId>-->
+            <!--<version>c4a948b8b799c02f01d528459924941977cb4854</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <repositories>

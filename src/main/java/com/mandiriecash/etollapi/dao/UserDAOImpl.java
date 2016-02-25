@@ -4,6 +4,8 @@ package com.mandiriecash.etollapi.dao;
  * Created by Ichwan Haryo Sembodo on 31/01/2016.
  */
 import com.mandiriecash.etollapi.models.User;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -33,6 +35,21 @@ public class UserDAOImpl implements UserDAO {
         session.save(user);
         transaction.commit();
         session.close();
+    }
+
+    @Override
+    public void updateUser(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(user);
+            tx.commit();
+        } catch (HibernateException e){
+            if (tx != null) tx.rollback();
+        } finally {
+            session.close();
+        }
     }
 
     public User getUserByMsisdn(String msisdn) {

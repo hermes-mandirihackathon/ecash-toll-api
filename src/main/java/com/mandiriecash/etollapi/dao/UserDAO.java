@@ -10,6 +10,11 @@ public interface UserDAO {
     public void createUser(User user);
 
     /**
+     * Update the user
+     * @param user user
+     */
+    void updateUser(User user);
+    /**
      * Return user. return null if doesn't exist.
      * @param msisdn
      * @return
