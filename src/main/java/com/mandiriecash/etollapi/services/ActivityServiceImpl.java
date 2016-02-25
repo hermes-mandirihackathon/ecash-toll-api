@@ -29,15 +29,10 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private PaymentService paymentService;
 
-    public int createActivity(Activity activity,String plateNo,String msisdn, String credentials,String token) throws CreateActivityException {
+    public int createActivity(Activity activity,String plateNo,String msisdn, String credentials,String token) throws PaymentErrorException {
         int activityId = activityDAO.createActivity(activity);
-        try {
-            paymentService.payToll(msisdn,credentials,token,
-                    activityId,activity.getSource_toll_id(),activity.getDest_toll_id(),activity.getPrice(),plateNo);
-        } catch (PaymentErrorException e) {
-            //TODO delete if failed
-            throw new CreateActivityException(e);
-        }
+        paymentService.payToll(msisdn,credentials,token,
+                activityId,activity.getSource_toll_id(),activity.getDest_toll_id(),activity.getPrice(),plateNo);
         return activityId;
     }
 

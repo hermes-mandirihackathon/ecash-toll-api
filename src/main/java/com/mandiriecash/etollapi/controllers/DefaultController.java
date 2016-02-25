@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAHttpException;
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
 import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
 import com.mandiriecash.etollapi.mea.exceptions.MEAUnknownErrorException;
 import com.mandiriecash.etollapi.models.User;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class DefaultController {
     static final String OK = "ok";
     static final String ERROR = "error";
+    static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
 
     @Autowired
     private UserService userService;
@@ -56,6 +59,9 @@ public class DefaultController {
             e.printStackTrace();
         } catch (MEALoginFailedException e) {
             loginResponse = new LoginResponse(ERROR,e.getMessage());
+        } catch (MEAHttpException e) {
+            loginResponse = new LoginResponse(ERROR,e.getMessage());
+            e.printStackTrace();
         }
         return loginResponse;
     }
@@ -69,14 +75,11 @@ public class DefaultController {
         try {
             MEABalanceInquiryResponse apiResponse = userService.balanceInquiry(token, msisdn);
             balanceResponse = new BalanceResponse(OK,apiResponse.getAccountBalance(),apiResponse.getCreditLimit());
-        } catch (MEAUnknownErrorException e) {
+        } catch (MEAUnknownErrorException | MEAIOException | MEAHttpException e) {
             e.printStackTrace();
-            //TODO change error message
             balanceResponse = new BalanceResponse(ERROR,e.getMessage());
-        } catch (MEAIOException e) {
-            e.printStackTrace();
-            //TODO change error message
-            balanceResponse = new BalanceResponse(ERROR,e.getMessage());
+        } catch (MEATokenExpiredException e) {
+            balanceResponse = new BalanceResponse(ERROR,TOKEN_EXPIRED);
         }
         return balanceResponse;
     }

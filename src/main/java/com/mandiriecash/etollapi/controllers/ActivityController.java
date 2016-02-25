@@ -1,6 +1,8 @@
 package com.mandiriecash.etollapi.controllers;
 
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
 import com.mandiriecash.etollapi.exceptions.CreateActivityException;
+import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
 import com.mandiriecash.etollapi.exceptions.VehicleNotFoundException;
 import com.mandiriecash.etollapi.models.Activity;
@@ -27,6 +29,8 @@ import java.util.List;
 public class ActivityController {
     public final static String OK = "ok";
     public final static String ERROR = "error";
+    public final static String TOKEN_EXPIRED = "TOKEN_EXPIRED";
+
     @Autowired
     private ActivityService activityService;
     @Autowired
@@ -57,13 +61,14 @@ public class ActivityController {
                     vehicle.getMsisdn(), user.getCredentials(), user.getToken());
 
             return new CreateActivityResponse(OK, "",activityId);
-        } catch (VehicleNotFoundException e) {
+        } catch (VehicleNotFoundException | UserNotFoundException e) {
             response = new CreateActivityResponse(ERROR,e.getMessage(),0);
-        } catch (UserNotFoundException e) {
-            response = new CreateActivityResponse(ERROR,e.getMessage(),0);
-        } catch (CreateActivityException e) {
-            e.printStackTrace();
-            response = new CreateActivityResponse(ERROR,e.getMessage(),0);
+        } catch (PaymentErrorException e) {
+            if (e.getCause() instanceof MEATokenExpiredException){
+                response = new CreateActivityResponse(ERROR,TOKEN_EXPIRED,0);
+            } else {
+                response = new CreateActivityResponse(ERROR,e.getMessage(),0);
+            }
         }
         return response;
     }

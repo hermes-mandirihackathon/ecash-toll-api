@@ -84,7 +84,7 @@
         <dependency>
             <groupId>com.github.yafithekid</groupId>
             <artifactId>mandiri-ecash-api-java</artifactId>
-            <version>0.1.1</version>
+            <version>c4a948b8b799c02f01d528459924941977cb4854</version>
         </dependency>
     </dependencies>
 
@@ -110,8 +110,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

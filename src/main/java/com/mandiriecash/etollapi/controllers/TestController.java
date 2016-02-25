@@ -2,7 +2,9 @@ package com.mandiriecash.etollapi.controllers;
 
 import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClient;
 import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClientImpl;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAHttpException;
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
 import com.github.yafithekid.mandiri_ecash_api.requests.*;
 import com.github.yafithekid.mandiri_ecash_api.responses.*;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ public class TestController {
             @RequestParam(name="msisdn") String msisdn,
             @RequestParam(name="uid") String uid,
             @RequestParam(name="credentials") String credentials
-            ) throws MEAIOException {
+            ) throws MEAIOException, MEAHttpException {
         MEALoginRequest loginRequest = (new MEALoginRequest.Builder())
                 .msisdn(msisdn)
                 .uid(uid)
@@ -37,7 +39,7 @@ public class TestController {
     public @ResponseBody MEALogoutResponse logout(
         @RequestParam(name="msisdn") String msisdn,
         @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEAHttpException {
         MEALogoutRequest logoutRequest = new MEALogoutRequest.Builder()
             .msisdn(msisdn)
             .token(token)
@@ -49,7 +51,7 @@ public class TestController {
     public @ResponseBody MEABalanceInquiryResponse balanceInquiry(
             @RequestParam(name="msisdn") String msisdn,
             @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEATokenExpiredException, MEAHttpException {
         MEABalanceInquiryRequest request = (new MEABalanceInquiryRequest.Builder())
                 .msisdn(msisdn)
                 .token(token)
@@ -61,7 +63,7 @@ public class TestController {
     public @ResponseBody MEAAccountHistoryResponse accountHistory(
             @RequestParam(name="msisdn") String msisdn,
             @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEATokenExpiredException, MEAHttpException {
         MEAAccountHistoryRequest request = (new MEAAccountHistoryRequest.Builder())
                 .msisdn(msisdn)
                 .token(token)
@@ -75,7 +77,7 @@ public class TestController {
         @RequestParam(name="msisdn") String msisdn,
         @RequestParam(name="to") String to,
         @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEATokenExpiredException, MEAHttpException {
         MEATransferMemberInquiryRequest request = new MEATransferMemberInquiryRequest.Builder()
             .amount(amount)
             .msisdn(msisdn)
@@ -93,7 +95,7 @@ public class TestController {
         @RequestParam(name="from") String from,
         @RequestParam(name="to") String to,
         @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEATokenExpiredException, MEAHttpException {
         MEATransferMemberPaymentRequest request = new MEATransferMemberPaymentRequest.Builder()
             .amount(amount)
             .credentials(credentials)
@@ -111,7 +113,7 @@ public class TestController {
         @RequestParam(name="credentials") String credentials,
         @RequestParam(name="msisdn") String msisdn,
         @RequestParam(name="token") String token
-    ) throws MEAIOException {
+    ) throws MEAIOException, MEATokenExpiredException, MEAHttpException {
         MEAOnStorePurchaseRequest request = new MEAOnStorePurchaseRequest.Builder()
             .amount(amount)
             .credentials(credentials)

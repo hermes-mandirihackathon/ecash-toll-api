@@ -5,6 +5,8 @@ package com.mandiriecash.etollapi.services;
  */
 import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClient;
 import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClientImpl;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAHttpException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
 import com.github.yafithekid.mandiri_ecash_api.responses.MEABalanceInquiryResponse;
 import com.github.yafithekid.mandiri_ecash_api.responses.MEALoginResponse;
 import com.google.gson.Gson;
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService{
      * @return token
      */
     public String loginUser(String uid,String msisdn,String credentials)
-            throws MEAIOException, MEALoginFailedException {
+            throws MEAIOException, MEALoginFailedException, MEAHttpException {
         MEALoginResponse meaLoginResponse = meaSyncRESTClient.login((new MEALoginRequest.Builder())
                 .uid(uid)
                 .msisdn(msisdn)
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public MEABalanceInquiryResponse balanceInquiry(String token, String msisdn)
-            throws MEAIOException, MEAUnknownErrorException {
+            throws MEAIOException, MEAUnknownErrorException, MEATokenExpiredException, MEAHttpException {
         MEABalanceInquiryResponse response = meaSyncRESTClient.balanceInquiry((new MEABalanceInquiryRequest.Builder()
                 .msisdn(msisdn)
                 .token(token)

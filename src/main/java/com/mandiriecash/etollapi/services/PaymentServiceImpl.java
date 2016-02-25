@@ -1,7 +1,9 @@
 package com.mandiriecash.etollapi.services;
 
 import com.github.yafithekid.mandiri_ecash_api.client.MEASyncRESTClient;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAHttpException;
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEAIOException;
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
 import com.github.yafithekid.mandiri_ecash_api.requests.MEATransferMemberPaymentRequest;
 import com.github.yafithekid.mandiri_ecash_api.responses.MEATransferMemberPaymentResponse;
 import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
@@ -34,6 +36,10 @@ public class PaymentServiceImpl implements PaymentService {
         } catch (MEAIOException e) {
             e.printStackTrace();
             throw new PaymentErrorException(e);
+        } catch (MEATokenExpiredException e) {
+            throw new PaymentErrorException(e);
+        } catch (MEAHttpException e) {
+            e.printStackTrace();
         }
     }
 }
