@@ -67,11 +67,7 @@ public class UserServiceImpl implements UserService{
             user.setToken("");
             createUser(user);
         }
-        token = user.getToken();
-        //kalo token null, atau password baru panggil mandiri api
-        if (token == null || token.equals("") || user.getCredentials() == null || user.getCredentials().equals("")){
-            token = refreshUserTokenAndPassword(uid, user,credentials);
-        }
+        token = refreshUserTokenAndPassword(uid, user,credentials);
         return token;
     }
 

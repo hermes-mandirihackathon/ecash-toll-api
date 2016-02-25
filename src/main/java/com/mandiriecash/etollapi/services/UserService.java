@@ -22,7 +22,7 @@ public interface UserService {
     public void createUser(User user);
 
     /**
-     * Ambil token dari database. Kalo gak ada, refresh token
+     * Refresh token dengan call mandiri api. Simpan hasilnya ke db
      * @param uid
      * @param msisdn
      * @param credentials

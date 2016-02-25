@@ -43,11 +43,12 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                             .url(url)
                             .build()).
                     execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            return gson.fromJson(response.body().charStream(), MEALoginResponse.class);
+            return gson.fromJson(responseBody, MEALoginResponse.class);
         } catch (IOException e) {
             throw new MEAIOException(e);
         }
@@ -56,18 +57,19 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
     @Override
     public MEALogoutResponse logout(MEALogoutRequest meaLogoutRequest) throws MEAIOException, MEAHttpException {
         try {
-            String url = meaurlFactory.logout(meaLogoutRequest.getToken(),meaLogoutRequest.getMsisdn());
+            String url = meaurlFactory.logout(meaLogoutRequest.getToken(), meaLogoutRequest.getMsisdn());
             System.out.println(url);
             Response response = okHttpClient.newCall(
                 new Request.Builder()
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            return gson.fromJson(response.body().charStream(), MEALogoutResponse.class);
+            return gson.fromJson(responseBody, MEALogoutResponse.class);
         } catch (IOException e) {
             throw new MEAIOException(e);
         }
@@ -85,11 +87,12 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            MEATransferMemberInquiryResponse meaResponse = gson.fromJson(response.body().charStream(), MEATransferMemberInquiryResponse.class);
+            MEATransferMemberInquiryResponse meaResponse = gson.fromJson(responseBody, MEATransferMemberInquiryResponse.class);
             if (meaResponse.getStatus().equalsIgnoreCase(TOKEN_EXPIRED)) {
                 throw new MEATokenExpiredException();
             }
@@ -112,11 +115,11 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            MEATransferMemberPaymentResponse meaResponse = gson.fromJson(response.body().charStream(), MEATransferMemberPaymentResponse.class);
+            MEATransferMemberPaymentResponse meaResponse = gson.fromJson(responseBody, MEATransferMemberPaymentResponse.class);
             if (meaResponse.getStatus().equalsIgnoreCase(TOKEN_EXPIRED)) {
                 throw new MEATokenExpiredException();
             }
@@ -137,11 +140,12 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            MEABalanceInquiryResponse meaResponse = gson.fromJson(response.body().charStream(), MEABalanceInquiryResponse.class);
+            MEABalanceInquiryResponse meaResponse = gson.fromJson(responseBody, MEABalanceInquiryResponse.class);
             if (meaResponse.getStatus().equalsIgnoreCase(TOKEN_EXPIRED)) {
                 throw new MEATokenExpiredException();
             }
@@ -163,11 +167,12 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            MEAAccountHistoryResponse meaResponse = gson.fromJson(response.body().charStream(), MEAAccountHistoryResponse.class);
+            MEAAccountHistoryResponse meaResponse = gson.fromJson(responseBody, MEAAccountHistoryResponse.class);
             if (meaResponse.getStatus().equalsIgnoreCase(TOKEN_EXPIRED)) {
                 throw new MEATokenExpiredException();
             }
@@ -189,11 +194,12 @@ public class MEASyncRESTClientImpl implements MEASyncRESTClient {
                     .url(url)
                     .build()
             ).execute();
-            System.out.println(response.body().toString());
+            String responseBody = response.body().string();
+            System.out.println(responseBody);
             if (!response.isSuccessful()){
-                throw new MEAHttpException(response.code(),response.body().toString());
+                throw new MEAHttpException(response.code(),responseBody);
             }
-            MEAOnStorePurchaseResponse meaResponse = gson.fromJson(response.body().charStream(),MEAOnStorePurchaseResponse.class);
+            MEAOnStorePurchaseResponse meaResponse = gson.fromJson(responseBody,MEAOnStorePurchaseResponse.class);
             if (meaResponse.getStatus().equalsIgnoreCase(TOKEN_EXPIRED)) {
                 throw new MEATokenExpiredException();
             }
