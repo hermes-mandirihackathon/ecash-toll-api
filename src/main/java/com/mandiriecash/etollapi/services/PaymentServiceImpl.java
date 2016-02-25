@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class PaymentServiceImpl implements PaymentService {
-    public static final String TARGET_PAYMENT_PHONE_NUMBER = "085728165503";
+    public static final String TARGET_PAYMENT_PHONE_NUMBER = "085729592442";
 
     @Autowired
     MEASyncRESTClient meaSyncRESTClient;
@@ -30,7 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
         try {
             MEATransferMemberPaymentResponse response = meaSyncRESTClient.transferMemberPayment(request);
             //TODO sure the result from server is ok string?
-            if (!response.getStatus().equalsIgnoreCase("OK")){
+            if (!response.getStatus().equalsIgnoreCase("processed")){
                 throw new PaymentErrorException("Unknown error : "+ response.getStatus());
             }
         } catch (MEAIOException e) {

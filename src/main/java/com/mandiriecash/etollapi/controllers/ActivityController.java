@@ -56,6 +56,7 @@ public class ActivityController {
             activity.setDest_toll_id(dest_toll_id);
             activity.setPrice(price);
             activity.setUser_id(user.getId());
+            activity.setTime(new Timestamp(System.currentTimeMillis()));
 
             int activityId = activityService.createActivity(activity, plate_no,
                     vehicle.getMsisdn(), user.getCredentials(), user.getToken());
@@ -85,8 +86,10 @@ public class ActivityController {
         List<GetActivityResponse.LogActivity> logActivities = new ArrayList<GetActivityResponse.LogActivity>();
         for(Activity activity: activities){
             //TODO change lalala
-            Vehicle vehicle = vehicleService.getVehicleById(activity.getVehicle_id());
-            logActivities.add(new GetActivityResponse.LogActivity(activity,vehicle.getName()));
+            //TODO lag parah
+            logActivities.add(new GetActivityResponse.LogActivity(activity,"woi"));
+//            Vehicle vehicle = vehicleService.getVehicleById(activity.getVehicle_id());
+//            logActivities.add(new GetActivityResponse.LogActivity(activity,vehicle.getName()));
         }
         return new GetActivityResponse(OK, "",logActivities);
     }
