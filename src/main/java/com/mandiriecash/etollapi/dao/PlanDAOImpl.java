@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+
 public class PlanDAOImpl implements PlanDAO{
     @Autowired
     private SessionFactory sessionFactory;
@@ -32,7 +33,7 @@ public class PlanDAOImpl implements PlanDAO{
         Transaction transaction = session.beginTransaction();
         List<Plan> results = session.createCriteria(Plan.class)
                 .add(Restrictions.eq("msisdn", msisdn))
-                .addOrder(Order.asc("time")).list();
+                .addOrder(Order.asc("timestamp")).list();
         transaction.commit();
         session.close();
         return results;
@@ -46,5 +47,53 @@ public class PlanDAOImpl implements PlanDAO{
         transaction.commit();
         session.close();
 
+    }
+
+    @Override
+    public void updatePlan(Plan plan) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(plan);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public Plan getPlanById(int id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        List<Plan> results = session.createCriteria(Plan.class)
+                .add(Restrictions.eq("id", id))
+                .list();
+        transaction.commit();
+        session.close();
+        if(results.get(0) != null) return results.get(0);
+        else return new Plan();
+    }
+
+    @Override
+    public List<Plan> getPlansByMsisdnAndExecuted(String msisdn) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        List<Plan> results = session.createCriteria(Plan.class)
+                .add(Restrictions.eq("msisdn", msisdn))
+                .add(Restrictions.eq("executed", true))
+                .addOrder(Order.asc("timestamp")).list();
+        transaction.commit();
+        session.close();
+        return results;
+    }
+
+    @Override
+    public List<Plan> getPlansByMsisdnAndNotExecuted(String msisdn) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        List<Plan> results = session.createCriteria(Plan.class)
+                .add(Restrictions.eq("msisdn", msisdn))
+                .add(Restrictions.eq("executed", false))
+                .addOrder(Order.asc("timestamp")).list();
+        transaction.commit();
+        session.close();
+        return results;
     }
 }

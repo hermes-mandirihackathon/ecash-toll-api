@@ -39,6 +39,25 @@ public class Plan {
     @Column(name="timestamp")
     private Timestamp timestamp;
 
+    @Column(name="executed")
+    private boolean executed;
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
+    }
+
     public int getSource_id() {
         return source_id;
     }

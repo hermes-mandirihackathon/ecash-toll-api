@@ -35,6 +35,7 @@
                 <value>com.mandiriecash.etollapi.models.Staff</value>
                 <value>com.mandiriecash.etollapi.models.Activity</value>
                 <value>com.mandiriecash.etollapi.models.Price</value>
+                <value>com.mandiriecash.etollapi.models.Plan</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -60,6 +61,8 @@
     <bean id="activityService" class="com.mandiriecash.etollapi.services.ActivityServiceImpl"></bean>
     <bean id="priceDAO" class="com.mandiriecash.etollapi.dao.PriceDAOImpl"> </bean>
     <bean id="priceService" class="com.mandiriecash.etollapi.services.PriceServiceImpl"></bean>
+    <bean id="planDAO" class="com.mandiriecash.etollapi.dao.PlanDAOImpl"></bean>
+    <bean id="planService" class="com.mandiriecash.etollapi.services.PlanServiceImpl"></bean>
 
     <bean class="com.mandiriecash.etollapi.services.PaymentServiceImpl"/>
 

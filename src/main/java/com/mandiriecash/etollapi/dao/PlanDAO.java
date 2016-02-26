@@ -10,4 +10,12 @@ public interface PlanDAO {
     List<Plan> getPlansByMsisdn(String msisdn);
 
     void deletePlan(Plan plan);
+
+    void updatePlan(Plan plan);
+
+    Plan getPlanById(int id);
+
+    List<Plan> getPlansByMsisdnAndExecuted(String msisdn);
+
+    List<Plan> getPlansByMsisdnAndNotExecuted(String msisdn);
 }
