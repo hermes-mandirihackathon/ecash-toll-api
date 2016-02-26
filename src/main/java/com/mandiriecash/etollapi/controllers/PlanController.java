@@ -53,9 +53,14 @@ public class PlanController {
     PlanResponse executePlan(
             @RequestParam(name = "id") int id){
         Plan plan = planService.getPlanById(id);
-        plan.setExecuted(true);
-        planService.updatePlan(plan);
-        return new PlanResponse("ok", "", new ArrayList<Plan>());
+        if(plan.isExecuted()){
+            return new PlanResponse("fail", "token already paid!", new ArrayList<Plan>());
+        }
+        else {
+            plan.setExecuted(true);
+            planService.updatePlan(plan);
+            return new PlanResponse("ok", "", new ArrayList<Plan>());
+        }
     }
 }
 
