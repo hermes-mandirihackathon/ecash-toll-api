@@ -4,6 +4,7 @@ import com.mandiriecash.etollapi.models.Activity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,7 +30,9 @@ public class ActivityDAOImpl implements ActivityDAO {
     public List<Activity> getActivitiesByUserId(int userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        List<Activity> results = session.createCriteria(Activity.class).add(Restrictions.eq("user_id", userId)).list();
+        List<Activity> results = session.createCriteria(Activity.class)
+                .add(Restrictions.eq("user_id", userId))
+                .addOrder(Order.asc("time")).list();
         transaction.commit();
         session.close();
         return results;
