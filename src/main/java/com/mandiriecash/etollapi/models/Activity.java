@@ -17,10 +17,12 @@ public class Activity {
     private Timestamp time;
     @Column(name = "vehicle_id")
     private int vehicle_id;
-    @Column(name = "source_toll_id")
-    private int source_toll_id;
-    @Column(name = "dest_toll_id")
-    private int dest_toll_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="source_toll_id")
+    private Toll source_toll;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="dest_toll_id")
+    private Toll dest_toll;
     @Column(name = "price")
     private int price;
     @Column(name = "user_id")
@@ -58,21 +60,37 @@ public class Activity {
         this.vehicle_id = vehicle_id;
     }
 
-    public int getSource_toll_id() {
-        return source_toll_id;
+    public Toll getSource_toll() {
+        return source_toll;
     }
 
-    public void setSource_toll_id(int source_toll_id) {
-        this.source_toll_id = source_toll_id;
+    public void setSource_toll(Toll source_toll) {
+        this.source_toll = source_toll;
     }
 
-    public int getDest_toll_id() {
-        return dest_toll_id;
+    public Toll getDest_toll() {
+        return dest_toll;
     }
 
-    public void setDest_toll_id(int dest_toll_id) {
-        this.dest_toll_id = dest_toll_id;
+    public void setDest_toll(Toll dest_toll) {
+        this.dest_toll = dest_toll;
     }
+
+    //    public int getSource_toll_id() {
+//        return source_toll_id;
+//    }
+//
+//    public void setSource_toll_id(int source_toll_id) {
+//        this.source_toll_id = source_toll_id;
+//    }
+
+//    public int getDest_toll_id() {
+//        return dest_toll_id;
+//    }
+//
+//    public void setDest_toll_id(int dest_toll_id) {
+//        this.dest_toll_id = dest_toll_id;
+//    }
 
     public int getPrice() {
         return price;

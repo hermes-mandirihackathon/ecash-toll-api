@@ -1,11 +1,11 @@
 package com.mandiriecash.etollapi.controllers;
 
 import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
-import com.mandiriecash.etollapi.exceptions.CreateActivityException;
 import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
 import com.mandiriecash.etollapi.exceptions.VehicleNotFoundException;
 import com.mandiriecash.etollapi.models.Activity;
+import com.mandiriecash.etollapi.models.Toll;
 import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.models.Vehicle;
 import com.mandiriecash.etollapi.services.ActivityService;
@@ -16,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ichwan Haryo Sembodo on 31/01/2016.
@@ -49,11 +47,15 @@ public class ActivityController {
         try {
             Vehicle vehicle = vehicleService.getVehicleByPlateNo(plate_no);
             User user = userService.getUserByMsisdn(vehicle.getMsisdn());
+            Toll src_toll = new Toll();
+            Toll dest_toll = new Toll();
             Activity activity = new Activity();
             activity.setTime(new Timestamp(new Date().getTime()));
             activity.setVehicle_id(vehicle.getId());
-            activity.setSource_toll_id(source_toll_id);
-            activity.setDest_toll_id(dest_toll_id);
+            src_toll.setId(source_toll_id);
+            activity.setSource_toll(src_toll);
+            dest_toll.setId(dest_toll_id);
+            activity.setDest_toll(dest_toll);
             activity.setPrice(price);
             activity.setUser_id(user.getId());
             activity.setTime(new Timestamp(System.currentTimeMillis()));
@@ -82,14 +84,19 @@ public class ActivityController {
         //TODO impl based on msisdn
         //TODO get vehicle name
         List<Activity> activities = activityService.getActivities(msisdn);
+        List<Vehicle> vehicles = vehicleService.getVehiclesByMsisdn(msisdn);
+        Map<Integer,String> vMap = new HashMap<>();
+        for(Vehicle vehicle:vehicles){
+            vMap.put(vehicle.getId(),vehicle.getName());
+        }
 
         List<GetActivityResponse.LogActivity> logActivities = new ArrayList<GetActivityResponse.LogActivity>();
         for(Activity activity: activities){
             //TODO change lalala
             //TODO lag parah
-            logActivities.add(new GetActivityResponse.LogActivity(activity,"woi"));
 //            Vehicle vehicle = vehicleService.getVehicleById(activity.getVehicle_id());
-//            logActivities.add(new GetActivityResponse.LogActivity(activity,vehicle.getName()));
+            String vehicleName = vMap.get(activity.getVehicle_id());
+            logActivities.add(new GetActivityResponse.LogActivity(activity,vehicleName,activity.getSource_toll().getName(),activity.getDest_toll().getName() ));
         }
         return new GetActivityResponse(OK, "",logActivities);
     }
@@ -113,13 +120,33 @@ class GetActivityResponse {
         int price;
         String vehicle_name;
         long timestamp;
+        String source_toll_name;
+        String dest_toll_name;
 
-        public LogActivity(Activity activity,String vehicleName){
+        public LogActivity(Activity activity, String vehicleName, String source_toll_name, String dest_toll_name){
             setId(activity.getId());
-            setSource_toll_id(activity.getSource_toll_id());
-            setDest_toll_id(activity.getDest_toll_id());
+            setSource_toll_id(activity.getSource_toll().getId());
+            setDest_toll_id(activity.getDest_toll().getId());
             setPrice(activity.getPrice());
             setVehicle_name(vehicleName);
+            setSource_toll_name(source_toll_name);
+            setDest_toll_name(dest_toll_name);
+        }
+
+        public String getSource_toll_name() {
+            return source_toll_name;
+        }
+
+        public void setSource_toll_name(String source_toll_name) {
+            this.source_toll_name = source_toll_name;
+        }
+
+        public String getDest_toll_name() {
+            return dest_toll_name;
+        }
+
+        public void setDest_toll_name(String dest_toll_name) {
+            this.dest_toll_name = dest_toll_name;
         }
 
         public int getId() {

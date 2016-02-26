@@ -32,7 +32,7 @@ public class ActivityServiceImpl implements ActivityService {
     public int createActivity(Activity activity,String plateNo,String msisdn, String credentials,String token) throws PaymentErrorException {
         int activityId = activityDAO.createActivity(activity);
         paymentService.payToll(msisdn,credentials,token,
-                activityId,activity.getSource_toll_id(),activity.getDest_toll_id(),activity.getPrice(),plateNo);
+                activityId,activity.getSource_toll().getId(),activity.getDest_toll().getId(),activity.getPrice(),plateNo);
         return activityId;
     }
 
