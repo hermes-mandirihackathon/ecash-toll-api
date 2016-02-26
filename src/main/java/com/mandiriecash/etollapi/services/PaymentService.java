@@ -6,4 +6,6 @@ public interface PaymentService {
     void payToll(String msisdn, String credentials, String token, int activityId, int sourceTollId, int destTollId,
                  int price, String plateNo) throws PaymentErrorException;
 
+    void payToll(String msisdn, String credentials,String token,int sourceTollId,int destTollId,int price)
+        throws PaymentErrorException;
 }

@@ -1,6 +1,7 @@
 package com.mandiriecash.etollapi.services;
 
 import com.mandiriecash.etollapi.dao.PlanDAO;
+import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.models.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,6 +10,9 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     @Autowired
     PlanDAO planDAO;
+
+    @Autowired
+    PaymentService paymentService;
 
     @Override
     public List<Plan> getPlansByMsisdn(String msisdn) {
@@ -43,5 +47,12 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public Plan getPlanById(int id) {
         return planDAO.getPlanById(id);
+    }
+
+    @Override
+    public void execute(Plan plan, String credentials, String token) throws PaymentErrorException {
+        plan.setExecuted(true);
+        updatePlan(plan);
+        paymentService.payToll(plan.getMsisdn(),credentials,token,plan.getSource_id(),plan.getDest_id(),plan.getPrice());
     }
 }

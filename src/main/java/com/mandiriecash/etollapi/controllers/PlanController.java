@@ -1,9 +1,14 @@
 package com.mandiriecash.etollapi.controllers;
 
+import com.github.yafithekid.mandiri_ecash_api.exceptions.MEATokenExpiredException;
+import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
+import com.mandiriecash.etollapi.exceptions.UserNotFoundException;
 import com.mandiriecash.etollapi.models.Plan;
+import com.mandiriecash.etollapi.models.User;
 import com.mandiriecash.etollapi.services.PlanService;
+import com.mandiriecash.etollapi.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,15 +22,22 @@ import java.util.List;
 @Controller
 @RequestMapping("/plans")
 public class PlanController {
+    private final String ok = "ok";
+    private final String error = "error";
+    public final static String TOKEN_EXPIRED = "TOKEN_EXPIRED";
+
     @Autowired
     PlanService planService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
     PlanResponse getPlans(
             @RequestParam(name = "msisdn") String msisdn){
         List<Plan> plans = planService.getPlansByMsisdnAndNotExecuted(msisdn);
-        return new PlanResponse("ok","", plans);
+        return new PlanResponse(ok,"", plans);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -45,21 +57,34 @@ public class PlanController {
         plan.setSource_name(source_name);
         plan.setPrice(price);
         plan.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        return new CreatePlanResponse("ok","",planService.createPlan(plan));
+        return new CreatePlanResponse(ok,"",planService.createPlan(plan));
     }
 
     @RequestMapping(value = "/execute", method = RequestMethod.GET)
     public @ResponseBody
-    PlanResponse executePlan(
+    ExecutePlanResponse executePlan(
             @RequestParam(name = "id") int id){
-        Plan plan = planService.getPlanById(id);
-        if(plan.isExecuted()){
-            return new PlanResponse("fail", "token already paid!", new ArrayList<Plan>());
-        }
-        else {
-            plan.setExecuted(true);
-            planService.updatePlan(plan);
-            return new PlanResponse("ok", "", new ArrayList<Plan>());
+        try {
+            Plan plan = planService.getPlanById(id);
+            if(plan.isExecuted()){
+                return new ExecutePlanResponse(error, "token already paid!");
+            }
+            else {
+                plan.setExecuted(true);
+                planService.updatePlan(plan);
+                User user = userService.getUserByMsisdn(plan.getMsisdn());
+                planService.execute(plan,user.getCredentials(),user.getToken());
+                return new ExecutePlanResponse(ok, "");
+            }
+
+        } catch (UserNotFoundException e) {
+            return new ExecutePlanResponse(error,e.getMessage());
+        } catch (PaymentErrorException e){
+            if (e.getCause() instanceof MEATokenExpiredException){
+                return new ExecutePlanResponse(error,TOKEN_EXPIRED);
+            } else {
+                return new ExecutePlanResponse(error,e.getMessage());
+            }
         }
     }
 }
@@ -111,5 +136,31 @@ class CreatePlanResponse {
 
     public int getId() {
         return id;
+    }
+}
+
+class ExecutePlanResponse {
+    private String status;
+    private String message;
+
+    public ExecutePlanResponse(String status, String message) {
+        this.message = message;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

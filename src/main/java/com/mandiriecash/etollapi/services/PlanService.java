@@ -1,5 +1,6 @@
 package com.mandiriecash.etollapi.services;
 
+import com.mandiriecash.etollapi.exceptions.PaymentErrorException;
 import com.mandiriecash.etollapi.models.Plan;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface PlanService {
     public int createPlan(Plan plan);
     public void deletePlan(Plan plan);
     public Plan getPlanById(int id);
+
+    void execute(Plan plan, String credentials, String token) throws PaymentErrorException;
 
 }

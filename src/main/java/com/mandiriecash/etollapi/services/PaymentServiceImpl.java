@@ -42,4 +42,31 @@ public class PaymentServiceImpl implements PaymentService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void payToll(String msisdn, String credentials, String token, int sourceTollId, int destTollId, int price) throws PaymentErrorException {
+        String desc = (new ECashTollGTODescription(sourceTollId,destTollId)).toString();
+        MEATransferMemberPaymentRequest request = new MEATransferMemberPaymentRequest.Builder()
+                .amount(price)
+                .token(token)
+                .credentials(credentials)
+                .from(msisdn)
+                .to(TARGET_PAYMENT_PHONE_NUMBER)
+                .description(desc)
+                .build();
+        try {
+            MEATransferMemberPaymentResponse response = meaSyncRESTClient.transferMemberPayment(request);
+            //TODO sure the result from server is ok string?
+            if (!response.getStatus().equalsIgnoreCase("processed")){
+                throw new PaymentErrorException("Unknown error : "+ response.getStatus());
+            }
+        } catch (MEAIOException e) {
+            e.printStackTrace();
+            throw new PaymentErrorException(e);
+        } catch (MEATokenExpiredException e) {
+            throw new PaymentErrorException(e);
+        } catch (MEAHttpException e) {
+            e.printStackTrace();
+        }
+    }
 }
