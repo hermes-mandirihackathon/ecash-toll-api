@@ -131,6 +131,7 @@ class GetActivityResponse {
             setVehicle_name(vehicleName);
             setSource_toll_name(source_toll_name);
             setDest_toll_name(dest_toll_name);
+            setTimestamp(activity.getTime().getTime());
         }
 
         public String getSource_toll_name() {
