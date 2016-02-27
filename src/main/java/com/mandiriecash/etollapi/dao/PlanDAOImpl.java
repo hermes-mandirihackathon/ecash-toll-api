@@ -78,7 +78,7 @@ public class PlanDAOImpl implements PlanDAO{
         List<Plan> results = session.createCriteria(Plan.class)
                 .add(Restrictions.eq("msisdn", msisdn))
                 .add(Restrictions.eq("executed", true))
-                .addOrder(Order.asc("timestamp")).list();
+                .addOrder(Order.desc("timestamp")).list();
         transaction.commit();
         session.close();
         return results;
@@ -91,7 +91,7 @@ public class PlanDAOImpl implements PlanDAO{
         List<Plan> results = session.createCriteria(Plan.class)
                 .add(Restrictions.eq("msisdn", msisdn))
                 .add(Restrictions.eq("executed", false))
-                .addOrder(Order.asc("timestamp")).list();
+                .addOrder(Order.desc("timestamp")).list();
         transaction.commit();
         session.close();
         return results;
